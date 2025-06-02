@@ -11,14 +11,13 @@ glob.data.docs_data = {
   // Ensure this document is defined as it's used in the 'Documents' section categories
   "initial_declaration": {
     title: "Initial Declaration of Intent",
-    doc_header_content: "Founding Principles",
-    doc_footer_content: "End of Declaration",
+    doc_hdr_con: "Founding Principles",
+    doc_ftr_con: "End of Declaration",
     chapters: [
-      { id: "declaration", title: "The Declaration", content_file: "docs/000_initial_declaration.pdf" } // prettier-ignore
+      { id: "declaration", title: "The Declaration", con_file: "docs/000_initial_declaration.pdf" } // prettier-ignore
     ]
   }
 };
-
 
 
 
@@ -35,7 +34,6 @@ glob.data.main_menu_cfg = [
 
 
 
-
 // -----------------------------
 // Document Categories for Main Menu
 // -----------------------------
@@ -45,7 +43,6 @@ glob.data.doc_categories = [
   { title: 'Project Management', doc_ids: [] }, // Populate with relevant doc_ids later
   { title: 'General Documents', doc_ids: [] }  // Populate with relevant doc_ids later
 ];
-
 
 
 
@@ -59,7 +56,6 @@ glob.data.site_links = [
   { text: "Scribe's Repository", href: "#scribes" },
   { text: "Whispering Gallery", href: "#rumors" }
 ];
-
  
 
 
@@ -70,6 +66,6 @@ glob.data.site_links = [
 // You can add more data structures here as needed.
 // For example, settings for the site, user roles, etc.
 glob.data.site_cfg = {
-  default_document: "initial_declaration", // Updated default document
-  default_chapter: "declaration" // Corrected to match the chapter ID in initial_declaration
+  default_doc: "initial_declaration", // Updated default document
+  default_chap: "declaration" // Corrected to match the chap ID in initial_declaration
 };
