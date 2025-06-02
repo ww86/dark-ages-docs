@@ -8,6 +8,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script>
+      // Required for PDF.js to work correctly
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+  </script>
+
+  
 </head>
 <body>
   <header class="site-header">
@@ -43,7 +52,7 @@
     </aside>
   </div>
   <footer class="site-footer">
-    <p>&copy; 2025 Dark Archives</p>
+    <p>Footer message</p>
   </footer>
   <script src=  "001_global_var.js">        </script>
   <script src=  "002_datatables.js">        </script>

@@ -1,116 +1,209 @@
-body {
-  margin: 0;
-  font-family: 'Georgia', serif;
-  background-color: #1b1b1b;
-  color: #e0dede;
+
+
+
+
+
+
+/*----------------------------------//
+//       COLOR PALETTE VARIABLES    //
+//----------------------------------*/
+
+:root {
+    /* Backgrounds */
+    --clr-bg-body:                #1b1b1b;
+    --clr-bg-site-elements:       #0e0e0e; /* Site header/footer */
+    --clr-bg-panels:              #151515; /* Main, sub, right columns */
+    --clr-bg-doc-elements:        #222222; /* Doc header/footer */
+    --clr-bg-interactive-hover:   #2a2a2a; /* Button/link hover */
+
+    /* Text Colors */
+    --clr-text-body:              #e0dede;
+    --clr-text-accent-primary:    crimson;  /* Site header h1 */
+    --clr-text-panel-links:       #d4af37; /* Gold-like color for panel links/buttons */
+
+    /* Border Colors */
+    --clr-border-primary:         #444444; /* General borders, hr, panel button bottom */
+    --clr-border-secondary:       #333333; /* Panel right borders, doc element borders */
+
+    /* Special Colors */
+    --clr-shadow-accent-primary:  #700000; /* Site header h1 text shadow */
+    --clr-hr-gradient-mid:        #999999; /* HR gradient middle color */
 }
 
-.site-header, .site-footer {
-  background-color: #0e0e0e;
-  text-align: center;
-  padding: 1rem 0;
-  border-top: 2px solid #444;
-  border-bottom: 2px solid #444;
+
+
+/*----------------------------------//
+//      GLOBAL STYLES & RESETS      //
+//----------------------------------*/
+
+body {
+    margin:                 0;
+    font-family:            'Georgia', serif;
+    background-color:       var(--clr-bg-body);
+    color:                  var(--clr-text-body);
+}
+
+hr {
+    border:                 0;
+    height:                 1px;
+    background:             linear-gradient(to right, var(--clr-border-primary), var(--clr-hr-gradient-mid), var(--clr-border-primary));
+    margin:                 1rem 0; /* Reduced margin from original 2rem */
+}
+
+
+
+/*----------------------------------//
+//    SITE STRUCTURE & LAYOUT       //
+//----------------------------------*/
+
+.site-header { /* Combined with .site-footer properties */
+    height:                 48px;  
+    background-color:       var(--clr-bg-site-elements);
+    text-align:             center;
+    padding:                6px 4px 6px 4px;
+    border-top:             2px solid var(--clr-border-primary);
+    border-bottom:          2px solid var(--clr-border-primary);
 }
 
 .site-header h1 {
-  font-family: 'Tangerine', cursive;
-  font-size: 3rem;
-  color: crimson;
-  margin: 0;
-  text-shadow: 0 0 5px #700000;
+    font-family:            'Tangerine', cursive;
+    font-size:              48px;
+    padding:                8px 4px 4px 4px;    
+    color:                  var(--clr-text-accent-primary);
+    margin:                 0;
+    text-shadow:            0 0 5px var(--clr-shadow-accent-primary);
+}
+
+.site-footer {
+    height:                 22px;
+    background-color:       var(--clr-bg-site-elements);
+    text-align:             center;
+    padding:                2px 4px 6px 4px;
+    font-size:              12px;
+    border-top:             2px solid var(--clr-border-primary);
+  /* border-bottom is often not needed if it's the last element, or can be styled if desired */
 }
 
 .main-container {
-  display: flex;
-  height: calc(100vh - 160px);
+    display:                flex;
+  /* This 160px should roughly match combined height of .site-header and .site-footer */
+  /* If site-header is ~80px and site-footer is ~50px, adjust accordingly */
+    height:                 calc(100vh - 130px); /* Example adjustment, measure your actual site header/footer */
 }
 
+
+
+/*----------------------------------//
+//      NAVIGATION PANELS           //
+//----------------------------------*/
 .main-menu,
 .sub-menu,
 .right-column {
-  background-color: #151515;
-  padding: 1rem;
-  width: 12%;
-  border-right: 2px solid #333;
+    background-color:       var(--clr-bg-panels);
+    padding:                1rem;
+    border-right:           2px solid var(--clr-border-secondary);
+    font-size:              0.9em; /* Slightly smaller font for panel text */
+    box-sizing:             border-box;
+}
+
+.main-menu {
+    width:                  220px; /* Fixed width */
+}
+
+.sub-menu {
+    width:                  200px; /* Fixed width */
+}
+
+.right-column {
+    width:                  180px; /* More narrow links column */
 }
 
 .main-menu ul,
 .sub-menu ul,
 .right-column ul {
-  list-style: none;
-  padding: 0;
+    list-style:             none;
+    padding:                0;
+    margin:                 0;
 }
 
 .main-menu li,
 .sub-menu li,
 .right-column li {
-  margin: 0.5rem 0;
+    margin-bottom:          0.4rem; /* Slightly reduced margin */
 }
 
+
+
+/*----------------------------------//
+//    INTERACTIVE ELEMENTS (PANELS) //
+//----------------------------------*/
 .main-menu button,
 .sub-menu button,
 .right-column a {
-  background: transparent;
-  border: none;
-  color: #d4af37;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-  display: block;
-  padding: 0.5rem;
-  border-bottom: 1px solid #444;
-  transition: background 0.2s ease;
+    background:             transparent;
+    border:                 none;
+    color:                  var(--clr-text-panel-links);
+    font-weight:            bold;
+    cursor:                 pointer;
+    text-decoration:        none;
+    display:                block;
+    width:                  100%;
+    text-align:             left;
+    padding:                0.4rem 0.5rem; /* Smaller padding */
+    border-bottom:          1px solid var(--clr-border-primary);
+    transition:             background 0.2s ease;
+    font-size:              inherit; /* Inherit smaller font from parent panel */
+    box-sizing:             border-box;
 }
 
 .main-menu button:hover,
 .sub-menu button:hover,
 .right-column a:hover {
-  background-color: #2a2a2a;
+    background-color:       var(--clr-bg-interactive-hover);
 }
 
+
+
+/*----------------------------------//
+//      DOCUMENT VIEW SECTION       //
+//----------------------------------*/
 .document-view {
-  flex: 1;
-  padding: 1rem;
-  position: relative;
-  overflow-y: auto;
+    flex:                   1;
+    padding:                0; /* Remove padding to allow header/footer to be flush */
+    position:               relative;
+    display:                flex;
+    flex-direction:         column;
+    height:                 100%; /* Ensure it uses the height from main-container */
 }
 
 .doc-header,
 .doc-footer {
-  background-color: #222;
-  padding: 1rem;
-  position: sticky;
-  left: 0;
-  right: 0;
-  z-index: 10;
+    background-color:       var(--clr-bg-doc-elements);
+  /* Reduced vertical padding, no horizontal padding */
+    padding:                0.6rem 0;
+    position:               sticky;
+    left:                   0;
+    right:                  0;
+    z-index:                10;
+    font-size:              0.95em; /* Slightly smaller font for header/footer text */
+    text-align:             center; /* Or left, as preferred */
+    flex-shrink:            0; /* Prevent shrinking */
 }
 
 .doc-header {
-  top: 0;
-  border-bottom: 2px solid #333;
+    top:                    0;
+    border-bottom:          2px solid var(--clr-border-secondary);
 }
 
 .doc-footer {
-  bottom: 0;
-  border-top: 2px solid #333;
+    bottom:                 0;
+    border-top:             2px solid var(--clr-border-secondary);
+    margin-top:             auto; /* Pushes footer to bottom if content is short */
 }
 
 .doc-content {
-  padding: 1rem 0;
-}
-
-hr {
-  border: 0;
-  height: 1px;
-  background: linear-gradient(to right, #444, #999, #444);
-  margin: 2rem 0;
-}
-
-.site-footer {
-  background-color: #0e0e0e;
-  text-align: center;
-  padding: 1rem 0;
-  font-size: 0.9rem;
-  border-top: 2px solid #444;
+  /* Padding for the actual content area, not the header/footer */
+    padding:                1rem;
+    flex-grow:              1;
+    overflow-y:             auto; /* For scrolling HTML content or if PDF iframe itself needs a container scroll */
 }

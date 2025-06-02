@@ -17,7 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const doc_header_div  = document.querySelector('.doc-header');
     const doc_content_div = document.querySelector('.doc-content');
     const doc_footer_div  = document.querySelector('.doc-footer');
-
+    
+    // Extend glob.heap for PDF state
+    glob.heap = glob.heap || {};
+    glob.heap.currentPdfDoc = null;
+    glob.heap.currentPdfBaseSrc = '';
 
 
 
@@ -146,12 +150,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // -----------------------------
 
     function populate_sub_menu(doc_id) { // This function is called when a document is selected from *any* menu
-        if (!sub_menu_ul || !glob.data.docs_data[doc_id] || !glob.data.docs_data[doc_id].chapters) {
+        const doc_data = glob.data.docs_data[doc_id];
+        if (!sub_menu_ul || !doc_data) {
             if (sub_menu_ul) sub_menu_ul.innerHTML = '<li>No sections available.</li>';
             return;
         }
 
         sub_menu_ul.innerHTML = ''; // Clear existing items
+        // If the current document is primarily a PDF collection, its chapters might be individual PDFs
+        // This function will now primarily list chapters. PDF page navigation will be handled separately.
+        if (!doc_data.chapters) return;
+
         const chapters = glob.data.docs_data[doc_id].chapters; // Use chapters from the selected doc_id
 
         chapters.forEach(chapter => {
@@ -159,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 textContent: chapter.title,
                 'data-chapter-id': chapter.id,
                 onclick: () => {
-                    load_document_content(glob.heap.curr_doc_id, chapter.id); 
+                    load_document_content(doc_id, chapter.id); 
                     glob.ui.clear_active(sub_menu_ul); // Clear active state in sub-menu
                     glob.ui.set_active_btn(button); // Set active state on the clicked sub-menu button
                 }
@@ -170,6 +179,38 @@ document.addEventListener('DOMContentLoaded', () => {
             sub_menu_ul.appendChild(li);
         });
     }
+
+    function populate_pdf_page_navigation(num_pages, base_src, initial_page = 1) {
+        if (!sub_menu_ul) return;
+        sub_menu_ul.innerHTML = ''; // Clear existing chapter links
+
+        for (let i = 1; i <= num_pages; i++) {
+            const page_num = i;
+            const button = glob.ui.new_btn(null, {
+                textContent: `Page ${page_num}`,
+                'data-page-num': page_num,
+                onclick: () => {
+                    const pdf_frame = doc_content_div.querySelector('iframe');
+                    if (pdf_frame) {
+                        pdf_frame.src = `${base_src}#page=${page_num}`;
+                    }
+                    if (doc_footer_div) {
+                        const pdf_title = glob.heap.currentPdfDoc ? (glob.heap.currentPdfDoc.metadata && glob.heap.currentPdfDoc.metadata.info ? glob.heap.currentPdfDoc.metadata.info.Title || base_src.split('/').pop() : base_src.split('/').pop()) : "PDF";
+                        doc_footer_div.innerHTML = `<span>${pdf_title} - Page ${page_num} of ${num_pages}</span>`;
+                    }
+                    glob.ui.clear_active(sub_menu_ul);
+                    glob.ui.set_active_btn(button);
+                }
+            });
+            if (page_num === initial_page) {
+                glob.ui.set_active_btn(button); // Set initial active page
+            }
+            const li = glob.ui.new_lis(null, {});
+            li.appendChild(button);
+            sub_menu_ul.appendChild(li);
+        }
+    }
+
 
 
 
@@ -183,45 +224,92 @@ document.addEventListener('DOMContentLoaded', () => {
         const doc = glob.data.docs_data[doc_id];
         const chapter = doc.chapters.find(ch => ch.id === chapter_id);
 
-        if (doc_header_div) doc_header_div.innerHTML = doc.doc_header_content || `Header for ${doc.title}`;
-        if (doc_footer_div) doc_footer_div.innerHTML = doc.doc_footer_content || `Footer for ${doc.title}`;
-
         if (!chapter || !chapter.content_file) { // Check if chapter or content_file is missing
+            if (doc_header_div) doc_header_div.innerHTML = doc.doc_header_content || `Header for ${doc.title}`;
+            if (doc_footer_div) doc_footer_div.innerHTML = doc.doc_footer_content || `Footer for ${doc.title}`;
             if (doc_content_div) doc_content_div.innerHTML = '<p>Chapter data or content file not specified.</p>';
             glob.heap.curr_chap_id = null;
+            glob.heap.currentPdfDoc = null;
             if (doc_content_div) doc_content_div.scrollTop = 0;
+            populate_sub_menu(doc_id); // Revert to chapter list if PDF fails early
             return;
         }
 
         if (doc_content_div) {
             doc_content_div.innerHTML = ''; // Clear previous content
+            glob.heap.currentPdfDoc = null; // Reset current PDF doc
 
             if (chapter.content_file.toLowerCase().endsWith('.pdf')) { // Check for PDF extension
-                // Handle PDF embedding
-                const pdf_frame = glob.ui.new_ifr(null, {
-                    src: chapter.content_file,
-                    title: chapter.title || 'PDF Document',
-                    style: 'width: 100%; height: calc(100vh - 160px); border: none;', // Adjust height as needed
-                    // Consider adding sandbox attributes if PDFs are from untrusted sources
-                });
-                doc_content_div.appendChild(pdf_frame);
-                glob.heap.curr_chap_id = chapter_id;
-                doc_content_div.scrollTop = 0; // Usually not needed for iframe content itself
-            } else { // Assume HTML for other extensions
-                // Handle HTML content fetching
+                // Fetch and parse PDF
                 fetch(chapter.content_file)
                     .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status} for ${chapter.content_file}`);
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status} for ${chapter.content_file}`);
+                        return response.arrayBuffer();
+                    })
+                    .then(arrayBuffer => pdfjsLib.getDocument({ data: arrayBuffer }).promise)
+                    .then(pdfDoc => {
+                        glob.heap.currentPdfDoc = pdfDoc;
+                        glob.heap.currentPdfBaseSrc = chapter.content_file;
+                        glob.heap.curr_chap_id = chapter_id;
+
+                        // Populate doc header with PDF title or first page text
+                        pdfDoc.getMetadata().then(metadata => {
+                            const title = metadata.info && metadata.info.Title ? metadata.info.Title : chapter.title || "PDF Document";
+                            if (doc_header_div) doc_header_div.innerHTML = `<h2>${title}</h2>`;
+                        }).catch(() => { // Fallback if metadata fails
+                            if (doc_header_div) doc_header_div.innerHTML = `<h2>${chapter.title || "PDF Document"}</h2>`;
+                        });
+                        
+                        // Attempt to get first page text for header (can be more elaborate)
+                        // pdfDoc.getPage(1).then(page => page.getTextContent()).then(textContent => {
+                        //     let firstPageText = textContent.items.slice(0, 5).map(item => item.str).join(' '); // First few text items
+                        //     if (doc_header_div && !doc_header_div.querySelector('h2')) { // Only if title wasn't set
+                        //          doc_header_div.innerHTML = `<p>${firstPageText}...</p>`;
+                        //     }
+                        // });
+
+                        // Populate doc footer
+                        if (doc_footer_div) {
+                             const pdf_title_for_footer = glob.heap.currentPdfDoc.metadata && glob.heap.currentPdfDoc.metadata.info ? glob.heap.currentPdfDoc.metadata.info.Title || chapter.content_file.split('/').pop() : chapter.content_file.split('/').pop();
+                            doc_footer_div.innerHTML = `<span>${pdf_title_for_footer} - Page 1 of ${pdfDoc.numPages}</span>`;
                         }
+
+                        // Populate sub-menu with page numbers
+                        populate_pdf_page_navigation(pdfDoc.numPages, chapter.content_file, 1);
+
+                        // Embed PDF in iframe
+                        const pdf_frame = glob.ui.new_ifr(null, {
+                            src: `${chapter.content_file}#page=1`, // Start at page 1
+                            title: chapter.title || 'PDF Document',
+                            style: 'width: 100%; height: calc(100vh - 132px); border: none;',
+                        });
+                        doc_content_div.appendChild(pdf_frame);
+                        doc_content_div.scrollTop = 0;
+
+                    }).catch(error => {
+                        console.error("Error loading or parsing PDF:", error);
+                        if (doc_header_div) doc_header_div.innerHTML = doc.doc_header_content || `Header for ${doc.title}`;
+                        if (doc_footer_div) doc_footer_div.innerHTML = doc.doc_footer_content || `Footer for ${doc.title}`;
+                        doc_content_div.innerHTML = `<p style="color: red;">Error loading PDF: ${chapter.content_file}.<br>${error.message}</p>`;
+                        glob.heap.curr_chap_id = null;
+                        populate_sub_menu(doc_id); // Revert to chapter list
+                    });
+
+            } else { // Assume HTML for other extensions or non-PDF content
+                if (doc_header_div) doc_header_div.innerHTML = doc.doc_header_content || `Header for ${doc.title}`;
+                if (doc_footer_div) doc_footer_div.innerHTML = doc.doc_footer_content || `Footer for ${doc.title}`;
+                populate_sub_menu(doc_id); // Ensure chapter list is shown for HTML
+
+                fetch(chapter.content_file)
+                    .then(response => {
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status} for ${chapter.content_file}`);
                         return response.text();
                     })
                     .then(html_content => {
                         doc_content_div.innerHTML = html_content;
                         glob.heap.curr_chap_id = chapter_id;
                         doc_content_div.scrollTop = 0;
-                    })
-                    .catch(error => {
+                    }).catch(error => {
                         console.error("Error loading chapter content:", error);
                         doc_content_div.innerHTML = `<p style="color: red;">Error loading content for '${chapter.title}'.<br>Please check the file path and ensure the file exists: ${chapter.content_file}</p>`;
                         glob.heap.curr_chap_id = null;
@@ -229,6 +317,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else {
             doc_content_div.innerHTML = '<p>Chapter data or content file not specified.</p>';
+            if (doc_header_div) doc_header_div.innerHTML = doc.doc_header_content || `Header for ${doc.title}`;
+            if (doc_footer_div) doc_footer_div.innerHTML = doc.doc_footer_content || `Footer for ${doc.title}`;
             glob.heap.curr_chap_id = null;
         }
     }
@@ -279,13 +369,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // and instead focus on activating the correct document button *inside* the collapsible section
         // and populating the sub-menu and content.
 
-        populate_sub_menu(glob.heap.curr_doc_id);
-        
         const default_chapter_id = glob.data.site_cfg.default_chapter || (default_doc_data.chapters.length > 0 ? default_doc_data.chapters[0].id : null);
         if (default_chapter_id) {
             load_document_content(glob.heap.curr_doc_id, default_chapter_id);
-            // The load_document_content call will trigger populate_sub_menu, which handles setting the active state on the sub-menu button.
+            // If it's an HTML doc, populate_sub_menu will be called inside load_document_content
+            // If it's a PDF, populate_pdf_page_navigation will be called.
+            // We need to ensure the correct sub-menu button (chapter or page) is active.
+            // This is now handled within populate_pdf_page_navigation or by the chapter button's onclick.
+        } else {
+            populate_sub_menu(glob.heap.curr_doc_id); // Populate with chapters if no specific chapter to load
         }
+
     } else {
         // Fallback if no default is set or found
         if (doc_content_div) doc_content_div.innerHTML = "<p>Welcome to the Dark Ages Archives. Please select a document from the main menu.</p>";
