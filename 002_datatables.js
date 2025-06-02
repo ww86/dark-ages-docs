@@ -14,7 +14,7 @@ glob.data.docs_data = {
     doc_header_content: "Founding Principles",
     doc_footer_content: "End of Declaration",
     chapters: [
-      { id: "declaration", title: "The Declaration", content_file: "pdf/000_initial_declaration.pdf" } // prettier-ignore
+      { id: "declaration", title: "The Declaration", content_file: "docs/000_initial_declaration.pdf" } // prettier-ignore
     ]
   }
 };
