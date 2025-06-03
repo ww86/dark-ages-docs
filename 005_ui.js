@@ -142,8 +142,8 @@ glob.ui.pop_pdf_pge_nav_menu = function(ul_ele, num_pges, handle_pge_click) {
 // Purpose: Generates the HTML for the links displayed in the right-hand column.
 // Structure: Accepts the target UL element, an array of site link objects (from glob.data.site_links),
 //            and a click handler for these links.
-//            It iterates through the link data, creating list items and anchor tags based purely on input.
-glob.ui.pop_right_col_links = function(ul_ele, site_links, handle_link_click) {
+//            It iterates through the link data, creating list items and anchor tags.
+glob.ui.pop_right_col_links = function(ul_ele, site_links) {
     // Implementation will use glob.dom.new_lis, glob.dom.new_anc.
     let li, anc;
 
@@ -153,12 +153,8 @@ glob.ui.pop_right_col_links = function(ul_ele, site_links, handle_link_click) {
     site_links.forEach(link_data => {
         li = glob.dom.new_lis(null, {});
         anc = glob.dom.new_anc(null, { textContent: link_data.text, href: link_data.href });
-        if (handle_link_click) {
-            anc.onclick = (event) => {
-                event.preventDefault(); // Prevent default anchor navigation
-                handle_link_click(link_data.href, anc);
-            };
-        }
+        anc.target = "_blank"; // Open link in a new tab
+        anc.rel = "noopener noreferrer"; // Recommended for security when using target="_blank"
         li.appendChild(anc);
         ul_ele.appendChild(li);
     });
@@ -268,14 +264,14 @@ glob.ui.trg_chap_sub_menu_pop = function(sub_menu_ul_ele, doc_id, handle_chap_bt
     glob.ui.pop_chap_sub_menu(sub_menu_ul_ele, doc_data.chapters || [], handle_chap_btn_click); // Assuming HTML docs might still have chapters
 };
 
-glob.ui.trg_right_col_pop = function(right_col_ul_ele, handle_link_click) {
+glob.ui.trg_right_col_pop = function(right_col_ul_ele) {
     // Fetches site_links from glob.data.site_links.
-    // Calls glob.ui.pop_right_col_links, passing the fetched links and the click handler.
+    // Calls glob.ui.pop_right_col_links, passing the fetched links.
     if (!glob.data.site_links) {
         console.error("[trg_right_col_pop] Site links data not found in glob.data.");
         return;
     }
-    glob.ui.pop_right_col_links(right_col_ul_ele, glob.data.site_links, handle_link_click);
+    glob.ui.pop_right_col_links(right_col_ul_ele, glob.data.site_links);
 };
 
 glob.ui.upd_doc_hdr_ftr = async function(pdf_doc_obj, pge_num, total_pges, doc_data_for_fallback, dom_eles_bndl) {
@@ -386,15 +382,24 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
             pdf_doc_obj = await loadingTask.promise;
             glob.heap.curr_pdf = pdf_doc_obj; // Store PDF.js document object
 
+            let pdf_src_url = content_url;
+            const default_zoom = glob.data.site_cfg?.default_pdf_zoom;
+            if (default_zoom) {
+                pdf_src_url += `#zoom=${default_zoom}`;
+            }
+
             pdf_ifr = glob.ui.create_pdf_view_ifr(null, {
-                src: content_url, // Direct link to PDF, browser's native viewer in iframe
+                src: pdf_src_url, // Direct link to PDF with zoom parameter
                 title: chap_data_obj.title || 'PDF Document',
                 style: 'width: 100%; height: calc(100% - 0px); border: none;' // Ensure iframe takes full available height
             });
             glob.ui.set_doc_con(doc_con_div, pdf_ifr);
 
             await glob.ui.upd_doc_hdr_ftr(pdf_doc_obj, 1, pdf_doc_obj.numPages, doc_data, dom_eles_bndl);
-            glob.ui.trg_pdf_pge_nav_pop(sub_menu_ul, pdf_doc_obj.numPages, content_url, evt_handlers_bndl.handle_pdf_pge_link_click, 1);
+            // Pass the base content_url without fragments for page navigation logic,
+            // the handle_pdf_pge_link_click can then append page and zoom.
+            // Or, trg_pdf_pge_nav_pop could be made aware of the base URL vs. URL with fragments.
+            glob.ui.trg_pdf_pge_nav_pop(sub_menu_ul, pdf_doc_obj.numPages, content_url /* base src */, evt_handlers_bndl.handle_pdf_pge_link_click, 1);
 
         } catch (err) {
             console.error("Error loading PDF chapter content:", err);

@@ -13,7 +13,14 @@ glob.data.docs_data = [
     id          :     "initial_declaration",
     title       :     "Initial Declaration",
     category    :     "primary_docs",     
-    path        :     "./docs/000_initial_declaration.pdf"
+    path        :     "./docs/000_initial_declaration.pdf",
+    pdf_regions : {
+      // Assuming US Letter (11 inches high), 0.5 inch / 11 inch = ~0.0455
+      // These regions define the 0.5-inch band at the top/bottom, full width.
+      // Adjust x and width if your header/footer text has side margins.
+      header: { x: 0, y: 0,      width: 1, height: 0.0455 }, // Top 0.5 inch of the page
+      footer: { x: 0, y: 0.9545, width: 1, height: 0.0455 }  // Bottom 0.5 inch of the page
+    }
   },
 
   // Project management documents
@@ -92,12 +99,10 @@ glob.data.doc_categories = { // Changed to an object for easier lookup by ID
 // -----------------------------
 
 glob.data.site_links = [
-  { text: "The Grand Archives",     href: "#archives" },
-  { text: "Cartographer's Guild",   href: "#maps" },
-  { text: "Scribe's Repository",    href: "#scribes" },
-  { text: "Whispering Gallery",     href: "#rumors" }
+  { text: "VTES discord",                     href: "https://discord.com/invite/vampire-the-eternal-struggle-official-887471681277399091" },
+  { text: "Custom Card Tool",                 href: "https://ww86.github.io/card-tool/" },
 ];
- 
+
 
 
 // -----------------------------
@@ -108,5 +113,6 @@ glob.data.site_links = [
 glob.data.site_cfg = {
   default_doc: "initial_declaration", // Updated default document
   default_chap: "initial_declaration", // For single file PDFs, chap_id often matches doc_id
+  default_pdf_zoom: "page-width", // Example: "page-width", "100" (for 100%), "page-fit"
   // repo_path_prefix: '' // This would no longer be strictly necessary for content paths if using ./
 };

@@ -91,6 +91,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (clicked_btn_ele) glob.dom.set_act_btn(clicked_btn_ele);
 
         if (pdf_frame && glob.heap.curr_pdf_basesrc) {
+            let new_src = `${glob.heap.curr_pdf_basesrc}#page=${pge_num}`;
+            const default_zoom = glob.data.site_cfg?.default_pdf_zoom; // Get default zoom
+
+            // Append zoom parameter
+            if (default_zoom) {
+                new_src += `&zoom=${default_zoom}`; // Use '&' as page is the first param
+        }
+
             // For basic iframe PDF viewing, changing src might be enough.
             pdf_frame.src = `${glob.heap.curr_pdf_basesrc}#page=${pge_num}`;
         }
