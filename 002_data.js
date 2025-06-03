@@ -32,6 +32,27 @@ glob.data.docs_data = [
     path        :     "./docs/AM_001_mechanics_locations.pdf"
   },
 
+  { 
+    id          :     "am002",
+    title       :     "AM 002 Mechanics: Damage and Soak",
+    category    :     "general_docs",
+    path        :     "./docs/AM_002_mechanics_damage_and_soak.pdf"
+  },  
+
+  { 
+    id          :     "am003",
+    title       :     "AM 003 Mechanics: Disciplines",
+    category    :     "general_docs",
+    path        :     "./docs/AM_003_mechanics_disciplines.pdf"
+  },  
+
+  { 
+    id          :     "am004",
+    title       :     "AM 004 Mechanics: Masquerade",
+    category    :     "general_docs",
+    path        :     "./docs/AM_004_mechanics_masquerade.pdf"
+  },    
+
 ];
 
 

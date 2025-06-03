@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 100);
     } else {
-        glob.ui.set_doc_con(doc_con_div, "<p>Welcome to the Dark Ages Archives. Please select a document from the main menu.</p>");
+        glob.ui.set_doc_con(doc_con_div, "");
     }    
 
 });
