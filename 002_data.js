@@ -4,20 +4,35 @@
 
 
 // -----------------------------
-// Document Data Definitions
+// Document Definitions
 // -----------------------------
+glob.data.docs_data = [
 
-glob.data.docs_data = {
-  // Ensure this document is defined as it's used in the 'Documents' section categories
-  "initial_declaration": {
-    title: "Initial Declaration of Intent",
-    doc_hdr_con: "Founding Principles",
-    doc_ftr_con: "End of Declaration",
-    chapters: [
-      { id: "declaration", title: "The Declaration", con_file: "docs/000_initial_declaration.pdf" } // prettier-ignore
-    ]
-  }
-};
+  // Primary documents
+  { 
+    id          :     "initial_declaration",
+    title       :     "Initial Declaration",
+    category    :     "primary_docs",     
+    path        :     "/docs/000_initial_declaration.pdf"
+  },
+
+  // Project management documents
+  { 
+    id          :     "ic001",
+    title       :     "IC 001 Status of Propositions",
+    category    :     "project_mgmt",
+    path        :     "/docs/IC_001_status_of_propositions.pdf"
+  },
+
+  // General documents
+  { 
+    id          :     "am001",
+    title       :     "AM 001 Mechanics: Locations",
+    category    :     "general_docs",
+    path        :     "/docs/AM_001_mechanics_locations.pdf"
+  },
+
+];
 
 
 
@@ -26,23 +41,28 @@ glob.data.docs_data = {
 // -----------------------------
 
 glob.data.main_menu_cfg = [
-  { type: 'link', text: 'Home', href: '#home' }, // Example link
   { type: 'documents', text: 'Documents' },     // This will trigger the special handling
-  { type: 'link', text: 'About', href: '#about' }  // Example link
-  // Add other top-level menu items here if needed
 ];
 
 
 
 // -----------------------------
-// Document Categories for Main Menu
+// Document Category Definitions
 // -----------------------------
-
-glob.data.doc_categories = [
-  { title: 'Initial Declaration of Intent', doc_ids: ['initial_declaration'] },
-  { title: 'Project Management', doc_ids: [] }, // Populate with relevant doc_ids later
-  { title: 'General Documents', doc_ids: [] }  // Populate with relevant doc_ids later
-];
+glob.data.doc_categories = { // Changed to an object for easier lookup by ID
+  "primary_docs": {
+    title: "Primary Documents", // Renamed for clarity
+    order: 1 // Optional: for controlling display order in the menu
+  },
+  "project_mgmt": {
+    title: "Project Management",
+    order: 2
+  },
+  "general_docs": {
+    title: "General Documents",
+    order: 3
+  }
+};
 
 
 
@@ -51,10 +71,10 @@ glob.data.doc_categories = [
 // -----------------------------
 
 glob.data.site_links = [
-  { text: "The Grand Archives", href: "#archives" },
-  { text: "Cartographer's Guild", href: "#maps" },
-  { text: "Scribe's Repository", href: "#scribes" },
-  { text: "Whispering Gallery", href: "#rumors" }
+  { text: "The Grand Archives",     href: "#archives" },
+  { text: "Cartographer's Guild",   href: "#maps" },
+  { text: "Scribe's Repository",    href: "#scribes" },
+  { text: "Whispering Gallery",     href: "#rumors" }
 ];
  
 

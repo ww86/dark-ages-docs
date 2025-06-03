@@ -18,7 +18,7 @@ glob.ui.pop_main_menu = function(ul_ele, menu_cfg, doc_categories, docs_data, ha
     // Implementation will use glob.dom.new_lis, glob.dom.new_btn, glob.dom.new_anc to create the menu structure.
     // It purely generates the menu items and attaches the provided click handlers.
     // Active state of buttons/links is managed by the respective click handlers in 006_script.js.
-    let li, item_ele, category_ul, category_li, docs_in_category_ul, doc_li, doc_btn, category_header_btn;
+    let li, item_ele, category_ul, category_li, docs_in_category_ul, doc_li, doc_btn, category_header_ele;
 
     if (!ul_ele) { console.error("[pop_main_menu] Target UL element not provided."); return; }
     ul_ele.innerHTML = ''; // Clear existing menu
@@ -35,28 +35,33 @@ glob.ui.pop_main_menu = function(ul_ele, menu_cfg, doc_categories, docs_data, ha
             }
             li.appendChild(item_ele);
         } else if (item.type === 'documents') {
-            item_ele = glob.dom.new_btn(null, { textContent: item.text, className: 'menu-header-btn' }); // Non-clickable header
-            li.appendChild(item_ele);
+            // Create the main "Documents" header as a non-clickable span
+            const main_docs_header_ele = glob.dom.new_spn(null, { textContent: item.text, className: 'menu-category-header' });
+            li.appendChild(main_docs_header_ele);
 
             category_ul = document.createElement('ul'); // Use standard ul for categories
             category_ul.className = 'doc-categories-list';
 
-            doc_categories.forEach(category => {
+            // Sort categories by their 'order' property before iterating
+            Object.values(doc_categories).sort((a, b) => a.order - b.order).forEach(category_details => {
+                const current_category_id = Object.keys(doc_categories).find(key => doc_categories[key] === category_details);
+
                 category_li = glob.dom.new_lis(null, {});
-                category_header_btn = glob.dom.new_btn(null, { textContent: category.title, className: 'category-header-btn' });
-                category_li.appendChild(category_header_btn);
+                // Create category titles (e.g., "Primary Documents") as non-clickable spans
+                category_header_ele = glob.dom.new_spn(null, { textContent: category_details.title, className: 'menu-category-header' });
+                category_li.appendChild(category_header_ele);
 
                 docs_in_category_ul = document.createElement('ul');
                 docs_in_category_ul.className = 'docs-list';
-                category.doc_ids.forEach(doc_id => {
-                    const doc_data = docs_data[doc_id];
-                    if (doc_data) {
+
+                // Filter docs_data array for documents matching the current category_id
+                docs_data.filter(doc => doc.category === current_category_id).forEach(doc_data_item => {
                         doc_li = glob.dom.new_lis(null, {});
-                        doc_btn = glob.dom.new_btn(null, { textContent: doc_data.title });
-                        doc_btn.onclick = (event) => handle_doc_btn_click(doc_id, event.target);
+                        doc_btn = glob.dom.new_btn(null, { textContent: doc_data_item.title });
+                        doc_btn.setAttribute('data-doc-id', doc_data_item.id);
+                        doc_btn.onclick = (event) => handle_doc_btn_click(doc_data_item.id, event.target);
                         doc_li.appendChild(doc_btn);
                         docs_in_category_ul.appendChild(doc_li);
-                    }
                 });
                 category_li.appendChild(docs_in_category_ul);
                 category_ul.appendChild(category_li);
@@ -227,20 +232,6 @@ glob.ui.trg_main_menu_pop = function(main_menu_ul_ele, handle_doc_btn_click, han
     glob.ui.pop_main_menu(main_menu_ul_ele, glob.data.main_menu_cfg, glob.data.doc_categories, glob.data.docs_data, handle_doc_btn_click, handle_nav_link_click);
 };
 
-glob.ui.trg_chap_sub_menu_pop = function(sub_menu_ul_ele, doc_id, handle_chap_btn_click) {
-    // Fetches the specific document's data (including chapters) for 'doc_id' from glob.data.docs_data.
-    // Calls glob.ui.pop_chap_sub_menu, passing the chapters array and the click handler.
-    const doc_data = glob.data.docs_data[doc_id];
-    if (!doc_data) {
-        console.error(`[trg_chap_sub_menu_pop] Document data not found for ID: ${doc_id}`);
-        if (sub_menu_ul_ele) {
-            glob.ui.pop_chap_sub_menu(sub_menu_ul_ele, [], handle_chap_btn_click); // Show "No sections"
-        }
-        return;
-    }
-    glob.ui.pop_chap_sub_menu(sub_menu_ul_ele, doc_data.chapters || [], handle_chap_btn_click);
-};
-
 glob.ui.trg_pdf_pge_nav_pop = function(sub_menu_ul_ele, num_pges, base_src, handle_pge_btn_click, initial_pge = 1) {
     // Calls glob.ui.pop_pdf_pge_nav_menu to generate page links.
     // After population, this function is responsible for finding the button corresponding to 'initial_pge'
@@ -267,13 +258,14 @@ glob.ui.trg_pdf_pge_nav_pop = function(sub_menu_ul_ele, num_pges, base_src, hand
 glob.ui.trg_chap_sub_menu_pop = function(sub_menu_ul_ele, doc_id, handle_chap_btn_click) {
     // Fetches the specific document's data (including chapters) for 'doc_id' from glob.data.docs_data.
     // Calls glob.ui.pop_chap_sub_menu, passing the chapters array and the click handler.
-    const doc_data = glob.data.docs_data[doc_id];
+    const doc_data = glob.data.docs_data.find(doc => doc.id === doc_id);
+
     if (!doc_data) {
         console.error(`[trg_chap_sub_menu_pop] Document data not found for ID: ${doc_id}`);
         if (sub_menu_ul_ele) glob.ui.pop_chap_sub_menu(sub_menu_ul_ele, [], handle_chap_btn_click); // Show "No sections"
         return;
     }
-    glob.ui.pop_chap_sub_menu(sub_menu_ul_ele, doc_data.chapters || [], handle_chap_btn_click);
+    glob.ui.pop_chap_sub_menu(sub_menu_ul_ele, doc_data.chapters || [], handle_chap_btn_click); // Assuming HTML docs might still have chapters
 };
 
 glob.ui.trg_right_col_pop = function(right_col_ul_ele, handle_link_click) {
@@ -293,8 +285,8 @@ glob.ui.upd_doc_hdr_ftr = async function(pdf_doc_obj, pge_num, total_pges, doc_d
 //            if PDF extraction fails or is not applicable.
 //            Updates the DOM elements in 'dom_eles_bndl' (doc_hdr_div, doc_ftr_div).
     const { doc_hdr_div, doc_ftr_div } = dom_eles_bndl;
-    let default_hdr = doc_data_for_fallback?.doc_hdr_con || (doc_data_for_fallback?.title ? `<h2>${doc_data_for_fallback.title}</h2>` : 'Document Header');
-    let default_ftr = doc_data_for_fallback?.doc_ftr_con || 'Document Footer';
+    let default_hdr = doc_data_for_fallback?.default_hdr_con || (doc_data_for_fallback?.title ? `<h2>${doc_data_for_fallback.title}</h2>` : 'Document Header');
+    let default_ftr = doc_data_for_fallback?.default_ftr_con || 'Document Footer';
     let num_pges_display = total_pges || (pdf_doc_obj ? pdf_doc_obj.numPages : 'N/A');
     let extracted_hdr_text = '', extracted_ftr_text = '';
 
@@ -328,42 +320,50 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
 //            Will contain local helper functions like _load_html_chap_con_impl and _load_pdf_chap_con_impl
 //            which receive all necessary data (doc_data, chap_data, dom_eles, evt_handlers) as parameters.
     const { doc_hdr_div, doc_con_div, doc_ftr_div, sub_menu_ul } = dom_eles_bndl;
-    const doc_data = glob.data.docs_data[doc_id];
-    let chap_data, response, html_con, pdf_doc_obj, pdf_ifr; // For PDF.js
+    const doc_data = glob.data.docs_data.find(doc => doc.id === doc_id);
+    let chap_data_obj, response, html_con, pdf_doc_obj, pdf_ifr; // For PDF.js
 
     if (!doc_data) {
         glob.ui.display_err_in_ele(doc_con_div, `Document data not found for ID: ${doc_id}`);
         return;
     }
-    chap_data = doc_data.chapters ? doc_data.chapters.find(ch => ch.id === chap_id) : null;
 
-    if (!chap_data) {
-        glob.ui.display_err_in_ele(doc_con_div, `Chapter data not found for ID: '${chap_id}' in document '${doc_data.title}'.`);
-        glob.ui.set_doc_hdr(doc_hdr_div, doc_data.doc_hdr_con || `<h2>${doc_data.title}</h2>`);
-        glob.ui.set_doc_ftr(doc_ftr_div, doc_data.doc_ftr_con || "End of Document");
-        if (sub_menu_ul) sub_menu_ul.innerHTML = ''; // Clear sub-menu
+    // For the new structure, if doc_data.chapters exists, we use it.
+    // Otherwise, we infer a single "chapter" from the doc_data.path for PDFs/single HTML files.
+    if (doc_data.chapters && doc_data.chapters.length > 0) {
+        chap_data_obj = doc_data.chapters.find(ch => ch.id === chap_id);
+        if (!chap_data_obj) {
+            glob.ui.display_err_in_ele(doc_con_div, `Chapter ID '${chap_id}' not found in document '${doc_data.title}'.`);
+            return;
+        }
+    } else if (doc_data.path) {
+        // Infer a single chapter for documents with a direct 'path' (likely PDFs or single HTML)
+        // The 'chap_id' passed might be a conventional one like "main_content" or the doc_id itself.
+        chap_data_obj = { id: chap_id, title: doc_data.title, con_file: doc_data.path };
+    } else {
+        glob.ui.display_err_in_ele(doc_con_div, `No content (chapters or path) defined for document '${doc_data.title}'.`);
         return;
     }
 
     glob.heap.curr_doc_id  = doc_id;
     glob.heap.curr_chap_id = chap_id;
     glob.heap.curr_pdf     = null; // Reset
-    glob.heap.curr_pdf_basesrc = chap_data.con_file; // Store base src for PDF page navigation
+    glob.heap.curr_pdf_basesrc = chap_data_obj.con_file; // Store base src for PDF page navigation
 
     // --- Local Helper: Load HTML Content ---
     async function _load_html_chap_con_impl() {
         try {
-            response = await fetch(chap_data.con_file);
+            response = await fetch(chap_data_obj.con_file);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status} for ${chap_data.con_file}`);
             html_con = await response.text();
 
-            glob.ui.set_doc_hdr(doc_hdr_div, chap_data.title ? `<h2>${chap_data.title}</h2>` : (doc_data.doc_hdr_con || `<h2>${doc_data.title}</h2>`));
+            glob.ui.set_doc_hdr(doc_hdr_div, chap_data_obj.title ? `<h2>${chap_data_obj.title}</h2>` : (doc_data.default_hdr_con || `<h2>${doc_data.title}</h2>`));
             glob.ui.set_doc_con(doc_con_div, html_con);
-            glob.ui.set_doc_ftr(doc_ftr_div, doc_data.doc_ftr_con || "End of Section");
+            glob.ui.set_doc_ftr(doc_ftr_div, doc_data.default_ftr_con || "End of Section");
             glob.ui.trg_chap_sub_menu_pop(sub_menu_ul, doc_id, evt_handlers_bndl.handle_chap_sub_menu_click);
         } catch (err) {
             console.error("Error loading HTML chapter content:", err);
-            glob.ui.display_err_in_ele(doc_con_div, `Failed to load content for '${chap_data.title}'.<br>${err.message}`);
+            glob.ui.display_err_in_ele(doc_con_div, `Failed to load content for '${chap_data_obj.title}'.<br>${err.message}`);
         }
     }
 
@@ -372,36 +372,37 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
         if (typeof pdfjsLib === 'undefined') {
             console.error("PDF.js library (pdfjsLib) is not loaded. Cannot display PDF.");
             glob.ui.display_err_in_ele(doc_con_div, "PDF viewer is not available. PDF.js library is missing.");
-            glob.ui.set_doc_hdr(doc_hdr_div, chap_data.title ? `<h2>${chap_data.title}</h2>` : (doc_data.doc_hdr_con || `<h2>${doc_data.title}</h2>`));
-            glob.ui.set_doc_ftr(doc_ftr_div, doc_data.doc_ftr_con || "PDF Document");
+            glob.ui.set_doc_hdr(doc_hdr_div, chap_data_obj.title ? `<h2>${chap_data_obj.title}</h2>` : (doc_data.default_hdr_con || `<h2>${doc_data.title}</h2>`));
+            glob.ui.set_doc_ftr(doc_ftr_div, doc_data.default_ftr_con || "PDF Document");
             if (sub_menu_ul) sub_menu_ul.innerHTML = ''; // Clear sub-menu
             return;
         }
         try {
             // pdfjsLib.GlobalWorkerOptions.workerSrc is already set in index.html
-            const loadingTask = pdfjsLib.getDocument(chap_data.con_file);
+            const loadingTask = pdfjsLib.getDocument(chap_data_obj.con_file);
             pdf_doc_obj = await loadingTask.promise;
             glob.heap.curr_pdf = pdf_doc_obj; // Store PDF.js document object
 
             pdf_ifr = glob.ui.create_pdf_view_ifr(null, {
-                src: chap_data.con_file, // Direct link to PDF, browser's native viewer in iframe
-                title: chap_data.title || 'PDF Document',
+                src: chap_data_obj.con_file, // Direct link to PDF, browser's native viewer in iframe
+                title: chap_data_obj.title || 'PDF Document',
                 style: 'width: 100%; height: calc(100% - 0px); border: none;' // Ensure iframe takes full available height
             });
             glob.ui.set_doc_con(doc_con_div, pdf_ifr);
 
             await glob.ui.upd_doc_hdr_ftr(pdf_doc_obj, 1, pdf_doc_obj.numPages, doc_data, dom_eles_bndl);
-            glob.ui.trg_pdf_pge_nav_pop(sub_menu_ul, pdf_doc_obj.numPages, chap_data.con_file, evt_handlers_bndl.handle_pdf_pge_link_click, 1);
+            glob.ui.trg_pdf_pge_nav_pop(sub_menu_ul, pdf_doc_obj.numPages, chap_data_obj.con_file, evt_handlers_bndl.handle_pdf_pge_link_click, 1);
 
         } catch (err) {
             console.error("Error loading PDF chapter content:", err);
-            glob.ui.display_err_in_ele(doc_con_div, `Failed to load PDF '${chap_data.title}'.<br>${err.message}`);
+            glob.ui.display_err_in_ele(doc_con_div, `Failed to load PDF '${chap_data_obj.title}'.<br>${err.message}`);
             glob.heap.curr_pdf = null;
+            if (sub_menu_ul) sub_menu_ul.innerHTML = ''; // Clear sub-menu on PDF load error
         }
     }
 
     // --- Determine content type and load ---
-    if (chap_data.con_file && chap_data.con_file.toLowerCase().endsWith('.pdf')) {
+    if (chap_data_obj.con_file && chap_data_obj.con_file.toLowerCase().endsWith('.pdf')) {
         await _load_pdf_chap_con_impl();
     } else { // Assume HTML or text-based
         await _load_html_chap_con_impl();

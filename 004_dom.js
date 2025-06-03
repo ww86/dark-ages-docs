@@ -54,6 +54,23 @@ glob.dom.new_anc = function(id, defaults = {}) {
 
 
 // -----------------------------
+// UI Element Creation: Span
+// -----------------------------
+
+glob.dom.new_spn = function(id, defaults = {}) {
+    const span = document.createElement('span');
+
+    if (id)                              {  span.id     = id;               }
+    Object.keys(defaults).forEach(key => {  span[key]   = defaults[key];    });
+
+    return span;
+
+};
+
+
+
+
+// -----------------------------
 // UI Element Creation: Div
 // -----------------------------
 
@@ -94,7 +111,7 @@ glob.dom.new_ifr = function(id, defaults = {}) {
 
 glob.dom.clr_act = function(menu_ul) {
     if (menu_ul && typeof menu_ul.querySelectorAll === 'function') {
-        menu_ul.querySelectorAll('button.active').forEach(btn => btn.classList.remove('act'));
+        menu_ul.querySelectorAll('.act').forEach(ele => ele.classList.remove('act'));
     }
 };
 

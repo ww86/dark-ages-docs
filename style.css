@@ -19,17 +19,265 @@
     /* Text Colors */
     --clr-text-body:              #e0dede;
     --clr-text-accent-primary:    crimson;  /* Site header h1 */
+    --clr-text-accent-secondary:  rgb(177, 34, 62);  /* Site header h1 */    
+    --clr-text-accent-tertiary:   rgb(141, 33, 54);  /* Site header h1 */    
     --clr-text-panel-links:       #d4af37; /* Gold-like color for panel links/buttons */
 
     /* Border Colors */
     --clr-border-primary:         #444444; /* General borders, hr, panel button bottom */
     --clr-border-secondary:       #333333; /* Panel right borders, doc element borders */
+    --clr-border-light:           #cccccc; /* For light backgrounds */
+
 
     /* Special Colors */
+    --black:                      #000000;
     --clr-shadow-accent-primary:  #700000; /* Site header h1 text shadow */
     --clr-hr-gradient-mid:        #999999; /* HR gradient middle color */
+    --clr-bg-menu-hdr-main:       #000000; /* Black for main "Documents" header */
+    --clr-bg-menu-hdr-category:   #1f1f1f; /* Darker gray for category headers */
+    --clr-bg-menu-item-doc:       #252525; /* Dark gray for document items */
 }
 
+
+
+/*----------------------------------//
+//       COLOR  DECLARATIONS        //
+//----------------------------------*/
+
+body {
+    color:                  var(--clr-text-body);
+}
+
+.site-header h1 {
+    color:                  var(--clr-text-accent-primary);
+    text-shadow:            0 0 5px var(--clr-shadow-accent-primary);
+}
+
+.main-menu .menu-category-header {
+    color:                  var(--clr-text-body);
+}
+
+.main-menu > ul > li:first-child > .menu-category-header {
+    color:                  var(--clr-text-accent-secondary); 
+}
+
+.main-menu .doc-categories-list > li > .menu-category-header {
+    color:                  var(--clr-text-accent-tertiary); 
+}
+
+.sub-menu button,
+.right-column a,
+.main-menu > ul > li > button { /* Clickable items in panels, not doc titles */
+    color:                  var(--clr-text-panel-links);
+}
+
+.main-menu .docs-list button { /* Document Titles */
+    color:                  var(--clr-text-body); /* White/light gray text */
+}
+.main-menu .docs-list button:hover { /* Moved from MENU ITEM STYLING */
+    color:                  var(--clr-text-panel-links);     /* Gold text on hover for highlight */
+}
+
+/*----------------------------------//
+//  BACKGROUND COLOR  DECLARATIONS  //
+//----------------------------------*/
+
+body {
+    background-color:       var(--clr-bg-body);
+}
+
+hr {
+    background:             linear-gradient(to right, var(--clr-border-primary), var(--clr-hr-gradient-mid), var(--clr-border-primary));
+}
+
+.site-header {
+    background-color:       var(--clr-bg-site-elements);
+}
+
+.site-footer {
+    background-color:       var(--clr-bg-site-elements);
+}
+
+.main-menu > ul > li:first-child { /* The entire "Documents" section LI */
+    background-color:       var(--clr-bg-menu-hdr-main);
+}
+
+.main-menu,
+.sub-menu,
+.right-column {
+    background-color:       var(--black);
+}
+
+.main-menu .menu-category-header {
+    background:             transparent; /* Or specific color if desired */
+}
+
+.main-menu .menu-category-header:hover {
+    background-color:       transparent;
+}
+
+.main-menu > ul > li:first-child > .menu-category-header {
+    background:             linear-gradient(to right, transparent, var(--clr-bg-menu-hdr-main));
+}
+
+.main-menu > ul > li:first-child > .menu-category-header:hover {
+    background-color:       var(--clr-bg-menu-hdr-main); /* Keep black background */
+}
+
+.main-menu .doc-categories-list > li > .menu-category-header {
+    background:             linear-gradient(to right, transparent, var(--clr-bg-menu-hdr-category));
+}
+
+.main-menu .doc-categories-list > li > .menu-category-header:hover {
+    background-color:       var(--clr-bg-menu-hdr-category); /* Solid on hover */
+}
+
+.main-menu .doc-categories-list .docs-list {
+    background-color:       transparent; /* Allow gradients on children to show main LI background */
+}
+
+.sub-menu button,
+.right-column a,
+.main-menu > ul > li > button {
+    background:             transparent;
+}
+
+.main-menu .docs-list button {
+    background:             linear-gradient(to right, transparent, var(--clr-bg-menu-item-doc));
+}
+
+.main-menu .docs-list button:hover,
+.main-menu > ul > li > button:hover,
+.sub-menu button:hover,
+.right-column a:hover {
+    background-color:       var(--clr-bg-interactive-hover);
+}
+
+.doc-header,
+.doc-footer {
+    background-color:       var(--clr-bg-doc-elements);
+}
+
+
+
+/*----------------------------------//
+//  BORDER (+COLOR) DECLARATIONS    //
+//----------------------------------*/
+
+
+.site-header {
+    border-top:             1px solid var(--clr-border-primary);
+    border-bottom:          1px solid var(--clr-border-primary);
+}
+
+.site-footer {
+    border-top:             1px solid var(--clr-border-primary);
+}
+
+.main-menu,
+.sub-menu,
+.right-column {
+    border-width:           0px 1px 0px 1px; /* Apply width only to the bottom (top, right, bottom, left) */
+    border-style:           solid;     /* Style is needed for border-image to work */
+    border-image-source:    linear-gradient(to top, transparent, var(--clr-bg-menu-hdr-category));    
+    border-image-slice:     1;    
+}
+
+hr {
+    border:                 0; /* Reset default browser border for hr */
+}
+
+.main-menu .menu-category-header {
+    border:                 none; /* Ensure no border from other rules */
+}
+
+.sub-menu button,
+.right-column a,
+.main-menu > ul > li > button {
+    border:                 none;
+    border-bottom:          1px solid var(--clr-border-primary);
+}
+
+.main-menu .doc-categories-list > li { /* Each category LI */
+    border-width:           0 0 1px 0; /* Apply width only to the bottom (top, right, bottom, left) */
+    border-style:           solid;     /* Style is needed for border-image to work */
+    border-image-source:    linear-gradient(to right, transparent, var(--clr-bg-menu-hdr-category));    
+    border-image-slice:     1;    
+}
+
+.main-menu .docs-list button {
+    border:                 none; /* Remove default border */
+    /* border-bottom removed from here */
+}
+
+.doc-header {
+    border-bottom:          1px solid var(--clr-border-secondary);
+}
+
+.doc-footer {
+    border-top:             1px solid var(--clr-border-secondary);
+}
+
+
+/*----------------------------------//
+//       FONT  DECLARATIONS         //
+//----------------------------------*/
+
+body {
+    font-family:            'Crimson Text', serif;
+}
+
+.site-header h1 {
+    font-family:            'Tangerine', cursive;
+    font-weight:            normal;
+    font-size:              48px;
+}
+
+.site-footer {
+    font-size:              12px;
+}
+
+.main-menu,
+.sub-menu,
+.right-column {
+    font-size:              12px; /* Slightly smaller font for panel text */
+    font-weight:            normal;    
+}
+
+.main-menu .menu-category-header { /* Base for all category headers */
+    font-family:            'Manuskript Gothisch', serif;    
+    font-weight:            normal;
+    font-size:              inherit; /* Inherits from .main-menu (0.9em of body) */
+}
+
+.main-menu > ul > li:first-child > .menu-category-header { /* "Documents" Main Header */
+    font-size:              16px;
+    font-weight:            normal;
+}
+
+.main-menu .doc-categories-list > li > .menu-category-header { /* Category Headers like "Primary Docs" */
+    font-family:            'Crimson Text', serif;    
+    font-size:              14px;
+    font-weight:            normal;
+}
+
+.sub-menu button,
+.right-column a,
+.main-menu > ul > li > button { /* Clickable items in panels, not doc titles */
+    font-weight:            bold;
+    font-size:              inherit; /* Inherit smaller font from parent panel */
+}
+
+.main-menu .docs-list button { /* Document Titles */
+    font-family:            'Crimson Text', serif;    
+    font-size:              12px;  /* Smallest (0.9 * panel's 0.9em) */
+    font-weight:            normal; /* Differentiate from bold headers */
+}
+
+.doc-header,
+.doc-footer {
+    font-size:              0.95em; /* Slightly smaller font for header/footer text */
+}
 
 
 /*----------------------------------//
@@ -38,15 +286,10 @@
 
 body {
     margin:                 0;
-    font-family:            'Georgia', serif;
-    background-color:       var(--clr-bg-body);
-    color:                  var(--clr-text-body);
 }
 
 hr {
-    border:                 0;
     height:                 1px;
-    background:             linear-gradient(to right, var(--clr-border-primary), var(--clr-hr-gradient-mid), var(--clr-border-primary));
     margin:                 1rem 0; /* Reduced margin from original 2rem */
 }
 
@@ -57,30 +300,20 @@ hr {
 //----------------------------------*/
 
 .site-header { /* Combined with .site-footer properties */
-    height:                 48px;  
-    background-color:       var(--clr-bg-site-elements);
+    height:                 54px;  
     text-align:             center;
     padding:                6px 4px 6px 4px;
-    border-top:             2px solid var(--clr-border-primary);
-    border-bottom:          2px solid var(--clr-border-primary);
 }
 
 .site-header h1 {
-    font-family:            'Tangerine', cursive;
-    font-size:              48px;
     padding:                8px 4px 4px 4px;    
-    color:                  var(--clr-text-accent-primary);
     margin:                 0;
-    text-shadow:            0 0 5px var(--clr-shadow-accent-primary);
 }
 
 .site-footer {
     height:                 22px;
-    background-color:       var(--clr-bg-site-elements);
     text-align:             center;
     padding:                2px 4px 6px 4px;
-    font-size:              12px;
-    border-top:             2px solid var(--clr-border-primary);
   /* border-bottom is often not needed if it's the last element, or can be styled if desired */
 }
 
@@ -99,22 +332,21 @@ hr {
 .main-menu,
 .sub-menu,
 .right-column {
-    background-color:       var(--clr-bg-panels);
-    padding:                1rem;
-    border-right:           2px solid var(--clr-border-secondary);
-    font-size:              0.9em; /* Slightly smaller font for panel text */
     box-sizing:             border-box;
 }
 
 .main-menu {
-    width:                  220px; /* Fixed width */
+    padding:                20px 0px 10px 20px;    
+    width:                  240px; /* Fixed width */
 }
 
 .sub-menu {
-    width:                  200px; /* Fixed width */
+    padding:                1rem;        
+    width:                  120px; /* Fixed width */
 }
 
 .right-column {
+    padding:                1rem;    
     width:                  180px; /* More narrow links column */
 }
 
@@ -126,42 +358,118 @@ hr {
     margin:                 0;
 }
 
-.main-menu li,
-.sub-menu li,
-.right-column li {
-    margin-bottom:          0.4rem; /* Slightly reduced margin */
+.main-menu ul {
+    padding-bottom:         10px;
+}
+
+/* Adjusted list item margins for main-menu hierarchy */
+.main-menu > ul > li, /* Top-level items in main-menu (categories or standalone links) */
+.sub-menu li,         /* Original spacing for other menus */
+.right-column li {    /* Original spacing for other menus */
+    margin-bottom:          0.5rem; /* Spacing for top-level/category separation */
+}
+
+.main-menu .doc-categories-list > li {
+    /* This increases space AFTER the border-bottom of a category block */
+    margin-top:             20px;
+    margin-bottom:          0.8rem; 
+}
+
+/* Indentation for tree structure in main-menu */
+.main-menu > ul > li > ul { /* Nested list (documents under a category) */
+    list-style:             none;
+    padding-left:           1.5rem; /* Indent the document list under a category */
+    margin-top:             1.0rem; /* Small space after category text/button */
+}
+
+.main-menu > ul > li > ul > li { /* Document items within a category in main-menu */
+    margin-top:             0.5rem;         
+    margin-bottom:          0.5rem; /* Tighter spacing for document links */
 }
 
 
 
+/* Further indentation for the list of document titles under a category header */
+.main-menu .doc-categories-list .docs-list {
+    padding-left:           1rem; /* Indent document titles further */
+    margin-top:             0.0rem; /* Small space after category header */
+    /* Add some padding if buttons don't fill the space or for visual consistency */
+    padding-bottom:         20px; /* Small padding at the bottom of the list */
+}
+
+
 /*----------------------------------//
-//    INTERACTIVE ELEMENTS (PANELS) //
+//    MENU ITEM STYLING (PANELS)    //
 //----------------------------------*/
-.main-menu button,
+
+/* Styles for Category Headers in .main-menu (e.g., <span class="menu-category-header">) */
+/* Base style for any menu-category-header - will be overridden by more specific rules */
+.main-menu .menu-category-header { /* This acts as a fallback or base */
+    cursor:                 default;    /* Not interactive */
+    text-decoration:        none;
+    display:                block;
+    width:                  100%;
+    text-align:             left;
+    padding:                0.4rem 0.5rem; /* Match link padding for alignment */
+    box-sizing:             border-box;
+}
+.main-menu .menu-category-header:hover {
+    /* Hover behavior defined in COLOR DECLARATIONS */
+}
+
+/* 1. "Documents" Main Header (Top-level in main-menu) */
+.main-menu > ul > li:first-child > .menu-category-header { /* Targets the "Documents" span */
+    padding:                0.5rem 0.5rem; /* Slightly more padding */
+}
+.main-menu > ul > li:first-child > .menu-category-header:hover {
+    /* Hover behavior defined in COLOR DECLARATIONS */
+}
+
+/* 2. Category Headers (e.g., "Primary Documents") */
+.main-menu .doc-categories-list > li > .menu-category-header {
+    padding:                0.3rem 0.5rem;
+}
+.main-menu .doc-categories-list > li > .menu-category-header:hover {
+    /* Hover behavior defined in COLOR DECLARATIONS */
+}
+
+
+/* Styling for CLICKABLE items (Document Links, Standalone Links in main-menu, other menus) */
+
+/* Base for clickable buttons in main-menu (if any outside docs-list) and other menus */
+/* This rule will be mostly overridden for .docs-list button for specific styling */
 .sub-menu button,
-.right-column a {
-    background:             transparent;
-    border:                 none;
-    color:                  var(--clr-text-panel-links);
-    font-weight:            bold;
+.right-column a,
+.main-menu > ul > li > button {          /* Standalone link buttons in main-menu (if any) */
     cursor:                 pointer;
     text-decoration:        none;
     display:                block;
     width:                  100%;
     text-align:             left;
     padding:                0.4rem 0.5rem; /* Smaller padding */
-    border-bottom:          1px solid var(--clr-border-primary);
     transition:             background 0.2s ease;
-    font-size:              inherit; /* Inherit smaller font from parent panel */
     box-sizing:             border-box;
 }
 
-.main-menu button:hover,
+/* 3. Document Titles (Clickable buttons within categories) */
+.main-menu .docs-list button {
+    cursor:                 pointer;
+    text-decoration:        none;
+    display:                block;
+    width:                  100%;
+    text-align:             left;
+    padding:                0.25rem 0.5rem; /* Adjusted padding */
+    transition:             background 0.2s ease;
+    box-sizing:             border-box;
+}
+
+/* Hover effects for actual CLICKABLE items */
+/* .main-menu .docs-list button:hover,  (This is more specific below) */
+.main-menu > ul > li > button:hover,
 .sub-menu button:hover,
 .right-column a:hover {
     background-color:       var(--clr-bg-interactive-hover);
 }
-
 
 
 /*----------------------------------//
@@ -176,28 +484,25 @@ hr {
     height:                 100%; /* Ensure it uses the height from main-container */
 }
 
+
 .doc-header,
 .doc-footer {
-    background-color:       var(--clr-bg-doc-elements);
   /* Reduced vertical padding, no horizontal padding */
     padding:                0.6rem 0;
     position:               sticky;
     left:                   0;
     right:                  0;
     z-index:                10;
-    font-size:              0.95em; /* Slightly smaller font for header/footer text */
     text-align:             center; /* Or left, as preferred */
     flex-shrink:            0; /* Prevent shrinking */
 }
 
 .doc-header {
     top:                    0;
-    border-bottom:          2px solid var(--clr-border-secondary);
 }
 
 .doc-footer {
     bottom:                 0;
-    border-top:             2px solid var(--clr-border-secondary);
     margin-top:             auto; /* Pushes footer to bottom if content is short */
 }
 
@@ -205,5 +510,5 @@ hr {
   /* Padding for the actual content area, not the header/footer */
     padding:                1rem;
     flex-grow:              1;
-    overflow-y:             auto; /* For scrolling HTML content or if PDF iframe itself needs a container scroll */
+    overflow-y:             auto; 
 }

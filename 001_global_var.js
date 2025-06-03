@@ -18,7 +18,7 @@ var glob = {
 
     data: {
         // Static data, populated by other scripts, not intended for runtime modification
-        docs_data               : {},
+        docs_data               : [],
         doc_categories          : [], // For structuring documents in the main menu
         main_menu_cfg           : [], // New: Configuration for the main menu structure
         site_links              : [],
@@ -35,6 +35,7 @@ var glob = {
         new_lis                 : function () { }, // For <li> elements (list item ele)
         new_btn                 : function () { }, // For <button> elements
         new_anc                 : function () { }, // For <a> elements (anchor)
+        new_spn                 : function () { }, // For <span> elements
         new_ifr                 : function () { }, // For <iframe> elements
         clr_act                 : function () { },
         set_act_btn             : function () { }
