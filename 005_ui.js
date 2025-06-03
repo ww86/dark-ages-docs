@@ -321,14 +321,14 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
 //            which receive all necessary data (doc_data, chap_data, dom_eles, evt_handlers) as parameters.
     const { doc_hdr_div, doc_con_div, doc_ftr_div, sub_menu_ul } = dom_eles_bndl;
     const doc_data = glob.data.docs_data.find(doc => doc.id === doc_id);
-    let chap_data_obj, response, html_con, pdf_doc_obj, pdf_ifr; // For PDF.js
+    let chap_data_obj, content_file_path; 
 
     if (!doc_data) {
         glob.ui.display_err_in_ele(doc_con_div, `Document data not found for ID: ${doc_id}`);
         return;
     }
 
-    // For the new structure, if doc_data.chapters exists, we use it.
+    // Determine chapter data object
     // Otherwise, we infer a single "chapter" from the doc_data.path for PDFs/single HTML files.
     if (doc_data.chapters && doc_data.chapters.length > 0) {
         chap_data_obj = doc_data.chapters.find(ch => ch.id === chap_id);
@@ -345,18 +345,20 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
         return;
     }
 
+    content_file_path = chap_data_obj.con_file; // Path is now relative (e.g., ./docs/file.pdf)
+
     glob.heap.curr_doc_id  = doc_id;
     glob.heap.curr_chap_id = chap_id;
     glob.heap.curr_pdf     = null; // Reset
-    glob.heap.curr_pdf_basesrc = chap_data_obj.con_file; // Store base src for PDF page navigation
+    glob.heap.curr_pdf_basesrc = content_file_path; // Store relative base src for PDF page navigation
 
     // --- Local Helper: Load HTML Content ---
-    async function _load_html_chap_con_impl() {
+    async function _load_html_chap_con_impl(content_url) {
+        let response, html_con;
         try {
-            response = await fetch(chap_data_obj.con_file);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status} for ${chap_data.con_file}`);
+            response = await fetch(content_url);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status} for ${content_url}`);
             html_con = await response.text();
-
             glob.ui.set_doc_hdr(doc_hdr_div, chap_data_obj.title ? `<h2>${chap_data_obj.title}</h2>` : (doc_data.default_hdr_con || `<h2>${doc_data.title}</h2>`));
             glob.ui.set_doc_con(doc_con_div, html_con);
             glob.ui.set_doc_ftr(doc_ftr_div, doc_data.default_ftr_con || "End of Section");
@@ -368,7 +370,8 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
     }
 
     // --- Local Helper: Load PDF Content ---
-    async function _load_pdf_chap_con_impl() {
+    async function _load_pdf_chap_con_impl(content_url) {
+        let pdf_doc_obj, pdf_ifr;
         if (typeof pdfjsLib === 'undefined') {
             console.error("PDF.js library (pdfjsLib) is not loaded. Cannot display PDF.");
             glob.ui.display_err_in_ele(doc_con_div, "PDF viewer is not available. PDF.js library is missing.");
@@ -379,19 +382,19 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
         }
         try {
             // pdfjsLib.GlobalWorkerOptions.workerSrc is already set in index.html
-            const loadingTask = pdfjsLib.getDocument(chap_data_obj.con_file);
+            const loadingTask = pdfjsLib.getDocument(content_url);
             pdf_doc_obj = await loadingTask.promise;
             glob.heap.curr_pdf = pdf_doc_obj; // Store PDF.js document object
 
             pdf_ifr = glob.ui.create_pdf_view_ifr(null, {
-                src: chap_data_obj.con_file, // Direct link to PDF, browser's native viewer in iframe
+                src: content_url, // Direct link to PDF, browser's native viewer in iframe
                 title: chap_data_obj.title || 'PDF Document',
                 style: 'width: 100%; height: calc(100% - 0px); border: none;' // Ensure iframe takes full available height
             });
             glob.ui.set_doc_con(doc_con_div, pdf_ifr);
 
             await glob.ui.upd_doc_hdr_ftr(pdf_doc_obj, 1, pdf_doc_obj.numPages, doc_data, dom_eles_bndl);
-            glob.ui.trg_pdf_pge_nav_pop(sub_menu_ul, pdf_doc_obj.numPages, chap_data_obj.con_file, evt_handlers_bndl.handle_pdf_pge_link_click, 1);
+            glob.ui.trg_pdf_pge_nav_pop(sub_menu_ul, pdf_doc_obj.numPages, content_url, evt_handlers_bndl.handle_pdf_pge_link_click, 1);
 
         } catch (err) {
             console.error("Error loading PDF chapter content:", err);
@@ -402,9 +405,9 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
     }
 
     // --- Determine content type and load ---
-    if (chap_data_obj.con_file && chap_data_obj.con_file.toLowerCase().endsWith('.pdf')) {
-        await _load_pdf_chap_con_impl();
+    if (content_file_path && content_file_path.toLowerCase().endsWith('.pdf')) {
+        await _load_pdf_chap_con_impl(content_file_path);
     } else { // Assume HTML or text-based
-        await _load_html_chap_con_impl();
+        await _load_html_chap_con_impl(content_file_path);
     }
 };

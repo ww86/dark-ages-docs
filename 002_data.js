@@ -13,7 +13,7 @@ glob.data.docs_data = [
     id          :     "initial_declaration",
     title       :     "Initial Declaration",
     category    :     "primary_docs",     
-    path        :     "/docs/000_initial_declaration.pdf"
+    path        :     "./docs/000_initial_declaration.pdf"
   },
 
   // Project management documents
@@ -21,7 +21,7 @@ glob.data.docs_data = [
     id          :     "ic001",
     title       :     "IC 001 Status of Propositions",
     category    :     "project_mgmt",
-    path        :     "/docs/IC_001_status_of_propositions.pdf"
+    path        :     "./docs/IC_001_status_of_propositions.pdf"
   },
 
   // General documents
@@ -29,7 +29,7 @@ glob.data.docs_data = [
     id          :     "am001",
     title       :     "AM 001 Mechanics: Locations",
     category    :     "general_docs",
-    path        :     "/docs/AM_001_mechanics_locations.pdf"
+    path        :     "./docs/AM_001_mechanics_locations.pdf"
   },
 
 ];
@@ -82,10 +82,10 @@ glob.data.site_links = [
 // -----------------------------
 // Site Configuration Settings
 // -----------------------------
-
 // You can add more data structures here as needed.
 // For example, settings for the site, user roles, etc.
 glob.data.site_cfg = {
   default_doc: "initial_declaration", // Updated default document
-  default_chap: "declaration" // Corrected to match the chap ID in initial_declaration
+  default_chap: "initial_declaration", // For single file PDFs, chap_id often matches doc_id
+  // repo_path_prefix: '' // This would no longer be strictly necessary for content paths if using ./
 };
