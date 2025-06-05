@@ -3,549 +3,636 @@
 
 
 
-
 /*----------------------------------//
-//       COLOR PALETTE VARIABLES    //
-//----------------------------------*/
+//       Color variables            //
+//----------------------------------//
+// Defines the global color palette for the site.
+*/
 
 :root {
-    /* Backgrounds */
-    --clr-bg-body:                #1b1b1b;
-    --clr-bg-site-elements:       #0e0e0e; /* Site header/footer */
-    --clr-bg-panels:              #151515; /* Main, sub, right columns */
-    --clr-bg-doc-elements:        #222222; /* Doc header/footer */
-    --clr-bg-interactive-hover:   #2a2a2a; /* Button/link hover */
-
-    /* Text Colors */
-    --clr-text-body:              #e0dede;
-    --clr-text-accent-primary:    crimson;  /* Site header h1 */
-    --clr-text-accent-secondary:  rgb(177, 34, 62);  /* Site header h1 */    
-    --clr-text-accent-tertiary:   rgb(141, 33, 54);  /* Site header h1 */    
-    --clr-text-panel-links:       #d4af37; /* Gold-like color for panel links/buttons */
-
-    /* Border Colors */
-    --clr-border-primary:         #444444; /* General borders, hr, panel button bottom */
-    --clr-border-secondary:       #333333; /* Panel right borders, doc element borders */
-    --clr-border-light:           #cccccc; /* For light backgrounds */
-
-
-    /* Special Colors */
-    --black:                      #000000;
-    --clr-shadow-accent-primary:  #700000; /* Site header h1 text shadow */
-    --clr-hr-gradient-mid:        #999999; /* HR gradient middle color */
-    --clr-bg-menu-hdr-main:       #000000; /* Black for main "Documents" header */
-    --clr-bg-menu-hdr-category:   #1f1f1f; /* Darker gray for category headers */
-    --clr-bg-menu-item-doc:       #252525; /* Dark gray for document items */
+    --bg-01:                #1b1b1b;
+    --bg-02:                #0e0e0e;
+    --bg-03:                #151515;
+    --bg-04:                #222222;
+    --bg-05:                #2a2a2a;
+    --bg-06:                #000000;
+    --bg-07:                #1f1f1f;
+    --bg-08:                #252525;
+    --txt-01:               #e0dede;
+    --txt-02:               crimson;
+    --txt-03:               rgb(177, 34, 62);
+    --txt-04:               rgb(141, 33, 54);
+    --txt-05:               #d4af37;
+    --border-01:            #444444;
+    --border-02:            #333333;
+    --border-03:            #cccccc;
+    --special-01:           #000000;
+    --special-02:           #700000;
+    --special-03:           #999999;
 }
 
 
 
 /*----------------------------------//
-//       COLOR  DECLARATIONS        //
-//----------------------------------*/
+//       Color declarations         //
+//----------------------------------//
+*/
 
-body {
-    color:                  var(--clr-text-body);
-}
+body                                            {   color:          var(--txt-01) ;                     }
+.mainmenu-docs-hdr-spn                          {   color:          var(--txt-03) ;                     } /* Mapped from .main-menu-documents-header, consolidated */
+.mainmenu-action-btn                            {   color:          var(--txt-05) ;                     } /* Mapped from .mainmenu-link-anc */
+[data-ms~="mainmenu-cat-title"]                 {   color:          var(--txt-04) ;                     }
+[data-ms~="rht-col-link"]                       {   color:          var(--txt-04) ;                     }
+.site-hdr h1                                    {   color:          var(--txt-02) ;                     }
 
-.site-header h1 {
-    color:                  var(--clr-text-accent-primary);
-    text-shadow:            0 0 5px var(--clr-shadow-accent-primary);
-}
+[data-ms~="mainmenu-doc-btn"]                   {   color:          var(--txt-01) ;                     }
+[data-ms~="mainmenu-doc-btn"]:hover             {   color:          var(--txt-05) ;                     }
+[data-ms~="mainmenu-doc-btn"][data-act="true"]  {   color:          var(--txt-05) ;                     }
+.chap-menu-item-btn                             {   color:          var(--txt-05) ;                     }
+.pdf-pge-nav-item-btn                           {   color:          var(--txt-05) ;                     }
+.mainmenu-action-btn:hover                      {   color:          var(--txt-01) ;                     }
+.mainmenu-action-btn[data-act="true"]           {   color:          var(--txt-01) ;                     }
 
-/* Clickable items in panels, not doc titles */
-.sub-menu button {
-    color:                  var(--clr-text-panel-links);
-}
-
-.right-column a { color:    var(--clr-text-accent-secondary);      }
-
-
-/*----------------------------------//
-//  BACKGROUND COLOR  DECLARATIONS  //
-//----------------------------------*/
-
-body {          background-color:       var(--clr-bg-body);     }
-hr {            background:             linear-gradient(to right, var(--clr-border-primary), var(--clr-hr-gradient-mid), var(--clr-border-primary)); }
-.site-header {  background-color:       var(--clr-bg-site-elements);    }
-
-.site-footer {
-    background-color:       var(--clr-bg-site-elements);
-}
-
-.sub-menu {
-    background-color:       var(--black);
-}
-
-.right-column {
-    background-color:       var(--black);
-
-}
-
-/* Background for clickable items in panels */
-.sub-menu button {
-    background:             transparent;
-}
-
-.right-column a {
-    background:             transparent;
-}
-.sub-menu button:hover {
-    background-color:       var(--clr-bg-interactive-hover);
-}
-
-.right-column a:hover {
-    background-color:       var(--clr-bg-interactive-hover);
-}
-
-.doc-header {
-    background-color:       var(--clr-bg-doc-elements);
-}
-
-.doc-footer {
-    background-color:       var(--clr-bg-doc-elements);
-}
+/* DOM Depth: 3 (h1 within .site-hdr) */
+.site-hdr h1                                    {   text-shadow:    0 0 5px var(--special-02);          }
 
 
 
 /*----------------------------------//
-//  BORDER (+COLOR) DECLARATIONS    //
-//----------------------------------*/
+//  Background color declarations   //
+//----------------------------------//
+// This section handles the application of background colors and gradients.
+// It covers global elements like the body, structural page sections,
+// and specific UI components, including their interactive hover states.
+*/
 
+body                                            { background-color: var(--bg-01) ;                     }
+.doc-ftr                                        { background-color: var(--bg-04) ;                     }
+.doc-hdr                                        { background-color: var(--bg-04) ;                     }
+[data-ms~="mainmenu-cat-title"]:hover           { background-color: var(--bg-07) ;                     }
+[data-ms~="mainmenu-doc-list-ul-style"]         { background-color: transparent ;                     }
+.mainmenu-docs-hdr-spn:hover                    { background-color: var(--bg-06) ;                     }
+.mainmenu-action-btn:hover                      { background-color: var(--bg-05) ;                     }
+.mainmenu-action-btn[data-act="true"]           { background-color: var(--bg-05) ;                     }
+.site-ftr                                       { background-color: var(--bg-02) ;                     }
+.site-hdr                                       { background-color: var(--bg-02) ;                     }
+.mainmenu-docs-hdr-spn                          { background:       transparent ;                     }
+[data-ms~="mainmenu-cat-title"]                 { background:       linear-gradient(to right, var(--special-01), var(--bg-07)) ;                     }
+.mainmenu-action-btn                            { background:       transparent ;                     }
+hr                                              { background:       linear-gradient(to right, var(--border-01), var(--special-03), var(--border-01)) ;                     }
+/* .right-column-header was removed as it's not in the new DOM */
 
-.site-header {
-    border-top:             1px solid var(--clr-border-primary);
-    border-bottom:          1px solid var(--clr-border-primary);
+.mainmenu                                       { background-color: var(--special-01) ;                     }
+[data-ms~="mainmenu-doc-btn"]:hover             { background-color: var(--bg-05) ;                     }
+[data-ms~="mainmenu-doc-btn"][data-act="true"]  { background-color: var(--bg-05) ;                     }
+.rht-col                                        { background-color: var(--special-01) ;                     }
+[data-ms~="rht-col-link"]:hover                 { background-color: var(--bg-05) ;                     }
+[data-ms~="rht-col-link"][data-act="true"]      { background-color: var(--bg-05) ;                     }
+.submenu                                        { background-color: var(--special-01) ;                     }
+.chap-menu-item-btn:hover                       { background-color: var(--bg-05) ;                     }
+.pdf-pge-nav-item-btn:hover                     { background-color: var(--bg-05) ;                     }
+.chap-menu-item-btn[data-act="true"]            { background-color: var(--bg-05) ;                     }
+.pdf-pge-nav-item-btn[data-act="true"]          { background-color: var(--bg-05) ;                     }
+
+[data-ms~="rht-col-link"]                       { background:       transparent ;                     }
+.chap-menu-item-btn                             { background:       transparent ;                     }
+.pdf-pge-nav-item-btn                           { background:       transparent ;                     }
+
+[data-ms~="mainmenu-doc-btn"]                   {
+    -webkit-appearance: none;
+    -moz-appearance:    none;
+    appearance:         none;
+    background-color:   var(--special-01);
+    background-image:   linear-gradient(to right, var(--special-01), var(--bg-08));
 }
 
-.site-footer {
-    border-top:             1px solid var(--clr-border-primary);
-}
 
-.sub-menu {
-    border-width:           0px 1px 0px 1px; /* Apply width only to the bottom (top, right, bottom, left) */
-    border-style:           solid;     /* Style is needed for border-image to work */
-    border-image-source:    linear-gradient(to top, transparent, var(--clr-bg-menu-hdr-category));    
-    border-image-slice:     1;    
-}
 
-.right-column {
-    border-width:           0px 1px 0px 1px; /* Apply width only to the bottom (top, right, bottom, left) */
-    border-style:           solid;     /* Style is needed for border-image to work */
-    border-image-source:    linear-gradient(to top, transparent, var(--clr-bg-menu-hdr-category));    
-    border-image-slice:     1;    
-}
+/*----------------------------------//
+//  Border (+color) declarations    //
+//----------------------------------//
+//
+// Defines all border-related styles, including their color, width, style,
+// and any image-based borders (e.g., gradients). These are applied to
+// structural elements, visual separators like <hr>, and UI components
+// to enhance visual structure and delineation.
+*/
 
+/* DOM Depth: 2 */
 hr {
-    border:                 0; /* Reset default browser border for hr */
+    border:                 0;
+}
+/* DOM Depth: 2 */
+.site-hdr {
+    border-top:             1px solid var(--border-01);
+    border-bottom:          1px solid var(--border-01);
+}
+/* DOM Depth: 2 */
+.site-ftr {
+    border-top:             1px solid var(--border-01);
 }
 
-.sub-menu button {
+/* DOM Depth: 3 */
+.mainmenu {
+    border-width:           0px 1px 0px 1px;
+    border-style:           solid;
+    border-image-source:    linear-gradient(to top, transparent, var(--bg-07));    
+    border-image-slice:     1;
+}
+/* DOM Depth: 6 (.mainmenu-docs-hdr-spn) */
+.mainmenu-docs-hdr-spn {
+    border-width:           0 0 1px 0;
+    border-style:           solid;
+    border-color:           transparent;
+    border-image-source:    linear-gradient(to right, var(--special-01), var(--txt-02));
+    border-image-slice:     1;    
+}
+/* DOM Depth: 6 (.mainmenu-action-btn) */
+.mainmenu-action-btn {
     border:                 none;
-    border-bottom:          1px solid var(--clr-border-primary);
+    border-bottom:          1px solid var(--border-01);
 }
-
-.right-column a {
+/* DOM Depth: 7 (.mainmenu-cat-item-li) */
+.mainmenu-cat-item-li {
+    border-width:           0 0 1px 0;
+    border-style:           solid;
+    border-color:           transparent;
+    border-image-source:    linear-gradient(to right, var(--special-01), var(--bg-07));
+    border-image-slice:     1;    
+}
+/* DOM Depth: 10 ([data-ms~="mainmenu-doc-btn"]) */
+[data-ms~="mainmenu-doc-btn"] {
     border:                 none;
-    border-bottom:          1px solid var(--clr-border-primary);
 }
 
-.doc-header {
-    border-bottom:          1px solid var(--clr-border-secondary);
+/* DOM Depth: 3 */
+.submenu {
+    border-width:           0px 1px 0px 1px;
+    border-style:           solid;
+    border-image-source:    linear-gradient(to top, transparent, var(--bg-07));
+    border-image-slice:     1;
+}
+/* DOM Depth: 6 (.chap-menu-item-btn) */
+.chap-menu-item-btn {
+    border:                 none;
+    border-bottom:          1px solid var(--border-01);
+}
+/* DOM Depth: 6 (.pdf-pge-nav-item-btn) */
+.pdf-pge-nav-item-btn {
+    border:                 none;
+    border-bottom:          1px solid var(--border-01);
 }
 
-.doc-footer {
-    border-top:             1px solid var(--clr-border-secondary);
+/* DOM Depth: 3 */
+.rht-col {
+    border-width:           0px 1px 0px 1px;
+    border-style:           solid;
+    border-image-source:    linear-gradient(to top, transparent, var(--bg-07));
+    border-image-slice:     1;
 }
+/* DOM Depth: 6 ([data-ms~="rht-col-link-anc"]) */
+[data-ms~="rht-col-link-anc"] {
+    border:                 none;
+    border-bottom:          1px solid var(--border-01);
+}
+
+/* DOM Depth: 4 */
+.doc-hdr {
+    border-bottom:          1px solid var(--border-02);
+}
+/* DOM Depth: 4 */
+.doc-ftr {
+    border-top:             1px solid var(--border-02);
+}
+
 
 
 /*----------------------------------//
-//       FONT  DECLARATIONS         //
-//----------------------------------*/
+//       Font families              //
+//----------------------------------//
+*/
+body                                {   font-family:    'Crimson Text', serif;          }
+.site-hdr h1                        {   font-family:    'Tangerine', cursive;           }
+.mainmenu-docs-hdr-spn              {   font-family:    'Manuskript Gothisch', serif;   }
+[data-ms~="mainmenu-cat-title"]     {   font-family:    'Crimson Text', serif;          }
+[data-ms~="mainmenu-doc-btn"]       {   font-family:    'Crimson Text', serif;          }
+[data-ms~="rht-col-link"]           {   font-family:    'Crimson Text', serif;          }
+.rht-col                            {   font-family:    'Crimson Text', serif;          }
 
-body {
-    font-family:            'Crimson Text', serif;
-}
-
-.site-header h1 {
-    font-family:            'Tangerine', cursive;
-    font-weight:            normal;
-    font-size:              48px;
-}
-
-.site-footer {
-    font-size:              12px;
-}
-
-.sub-menu {
-    font-size:              10px; /* Slightly smaller font for panel text */
-    font-weight:            normal;    
-}
-
-.right-column {
-    font-family:            'Crimson Text', serif;    
-    font-size:              12px; /* Slightly smaller font for panel text */
-    font-weight:            normal;    
-}
-
-.sub-menu button { /* Clickable items in panels, not doc titles */
-    font-weight:            bold;
-    font-size:              inherit; /* Inherit smaller font from parent panel */
-}
-
-.right-column a { /* Clickable items in panels, not doc titles */
-    font-weight:            bold;
-    font-size:              inherit; /* Inherit smaller font from parent panel */
-}
-
-.doc-header {
-    font-size:              0.95em; /* Slightly smaller font for header/footer text */
-}
-
-.doc-footer {
-    font-size:              0.95em; /* Slightly smaller font for header/footer text */
-}
 
 
 /*----------------------------------//
-//      GLOBAL STYLES & RESETS      //
-//----------------------------------*/
+//       Font sizes                 //
+//----------------------------------//
+*/
+[data-ms~="mainmenu-cat-title"]     {   font-size:      14px      ;                     }
+.doc-ftr                            {   font-size:      0.95em    ;                     }
+.doc-hdr                            {   font-size:      0.95em    ;                     }
+.mainmenu                           {   font-size:      12px      ;                     }
+[data-ms~="mainmenu-doc-btn"]       {   font-size:      12px      ;                     }
+.mainmenu-docs-hdr-spn              {   font-size:      16px      ;                     }
+.mainmenu-action-btn                {   font-size:      inherit   ;                     }
+.rht-col                            {   font-size:      12px      ;                     }
+[data-ms~="rht-col-link"]           {   font-size:      14px      ;                     }
+.site-ftr                           {   font-size:      12px      ;                     }
+.site-hdr h1                        {   font-size:      48px      ;                     }
+.submenu                            {   font-size:      10px      ;                     }
+.chap-menu-item-btn                 {   font-size:      inherit   ;                     }
+.pdf-pge-nav-item-btn               {   font-size:      inherit   ;                     }
 
+
+
+/*----------------------------------//
+//       Font weights               //
+//----------------------------------//
+*/
+[data-ms~="mainmenu-cat-title"]     {   font-weight:    normal    ;                     }
+[data-ms~="mainmenu-doc-btn"]       {   font-weight:    normal    ;                     }
+.mainmenu                           {   font-weight:    normal    ;                     }
+.mainmenu-docs-hdr-spn              {   font-weight:    normal    ;                     }
+.mainmenu-action-btn                {   font-weight:    bold      ;                     }
+.rht-col                            {   font-weight:    normal    ;                     }
+[data-ms~="rht-col-link"]           {   font-weight:    bold      ;                     }
+.site-hdr h1                        {   font-weight:    normal    ;                     }
+.submenu                            {   font-weight:    normal    ;                     }
+.chap-menu-item-btn                 {   font-weight:    bold      ;                     }
+.pdf-pge-nav-item-btn               {   font-weight:    bold      ;                     }
+
+
+
+/*----------------------------------//
+//      Global style & resets       //
+//----------------------------------//
+// Contains foundational CSS resets (e.g., for body margin) and global styles
+*/
+
+/* DOM Depth: 1 */
 body {
     margin:                 0;
+    box-sizing:             border-box;
 }
 
+/* DOM Depth: 2 */
 hr {
     height:                 1px;
-    margin:                 1rem 0; /* Reduced margin from original 2rem */
+    margin:                 1rem 0;
 }
 
 
 
 /*----------------------------------//
-//    SITE STRUCTURE & LAYOUT       //
-//----------------------------------*/
+//    Site structure & layout       //
+//----------------------------------//
+// Defines the high-level page structure and layout, including the main
+// containers for the site header, footer, and the primary content area.
+// Styles here focus on dimensions, alignment, and flexbox/grid behaviors
+// that organize the overall page.
+*/
 
-.site-header { /* Combined with .site-footer properties */
+/* DOM Depth: 2 */
+.site-hdr {
     height:                 54px;  
     text-align:             center;
     padding:                6px 4px 6px 4px;
 }
 
-.site-header h1 {
+/* DOM Depth: 3 */
+.site-hdr h1 {
     padding:                8px 4px 4px 4px;    
     margin:                 0;
 }
 
-.site-footer {
+/* DOM Depth: 2 */
+.site-ftr {
     height:                 22px;
     text-align:             center;
     padding:                2px 4px 6px 4px;
-  /* border-bottom is often not needed if it's the last element, or can be styled if desired */
 }
 
-.main-container {
+/* DOM Depth: 2 */
+.main-cntnr {
     display:                flex;
-  /* This 160px should roughly match combined height of .site-header and .site-footer */
-  /* If site-header is ~80px and site-footer is ~50px, adjust accordingly */
-    height:                 calc(100vh - 130px); /* Example adjustment, measure your actual site header/footer */
+    height:                 calc(100vh - 130px);
+}
+
+
+
+/*----------------------------------//
+//    Multi-selectors via data-ms   //
+//----------------------------------//
+// data-ms attribute defines a pseudo-class 
+// used when the constraint on the classes 
+// becomes an obstacle
+*/
+
+[data-act="true"] {
+    outline: 1px solid var(--txt-05);
+    outline-offset: 2px;
+}
+
+[data-ms~="mainmenu-action-btn"] {
+    /* display: block; */
+    /* width: 100%; */
+}
+
+[data-ms~="mainmenu-cat-item"] { /* Targets .mainmenu-cat-item-li */
+    /* Spacing */
+    margin:                 0px 0px 0px 0px; 
+    padding:                0px 0px 20px 0px;   
+    /* Borders - Defined in "Border (+color) declarations" section for .mainmenu-cat-item-li */
+    /* List Specific */
+    list-style:             none; /* If it's an LI */
+}
+
+[data-ms~="mainmenu-cat-title"] {
+    /* Layout & Position */
+    display:                block;
+    /* Spacing */
+    margin:                 0px 0px;      /* Vertical spacing, horizontal 0 to allow full width effects */
+    padding:                5px 5px;  /* Inner spacing for text */
+    /* Borders */
+    border-width:           0 0 1px 0;
+    border-style:           solid;
+    border-image-source:    linear-gradient(to right, transparent, var(--txt-02));
+    border-image-slice:     1;
+    /* Background - Defined in "Background color declarations" section */
+    /* Typography */
+    /* color: var(--txt-04); */ /* Defined in "Color declarations" */
+    /* font-family: 'Manuskript Gothisch', serif; */ /* Defined in "Font families" */
+    /* font-size: 14px; */ /* Defined in "Font sizes" */
+    text-decoration:        none;
+    /* Interaction */
+    cursor:                 default;
+}
+
+[data-ms~="mainmenu-doc-list"] {
+    /* Spacing */
+    margin:                 0px 0px 0px 0px; 
+    padding:                0px 0px 5px 0px; /* Top, Right, Bottom, Left. Horizontal padding is 0. */
+    /* List Specific */
+    list-style:             none;
+}
+
+[data-ms~="mainmenu-doc-item-li"] {
+    /* Spacing */
+    margin:                 0px 0px 0px 0px; 
+    padding:                0px 0px 0px 0px;   
+    /* List Specific */
+    list-style:             none; /* If it's an LI */
+}
+
+/* --- Document Button (within Document Item) --- */
+/* This is the BUTTON linking to a document. Has data-ms="mainmenu-doc-btn". */
+[data-ms~="mainmenu-doc-btn"] {
+    /* Layout & Position */
+    display:                block;
+    /* Dimensions */
+    width:                  100%;
+    /* Spacing */
+    margin:                 0px 0px 0px 0px; 
+    padding:                5px 0px 5px 22px;   
+    /* Borders - Defined in "Border (+color) declarations" section */
+    /* Background - Defined in "Background color declarations" section */
+    /* Typography */
+    /* color: var(--txt-01); */ /* Defined in "Color declarations" */
+    /* font-family: 'Crimson Text', serif; */ /* Defined in "Font families" */
+    /* font-size: 12px; */ /* Defined in "Font sizes" */
+    text-align:             left;
+    text-decoration:        none;
+    /* Interaction */
+    cursor:                 pointer;
+    /* Effects */
+    transition:             background 0.2s ease;
 }
 
 
 
 /*----------------------------------//
 //      Main menu                   //
-//----------------------------------*/
+//----------------------------------//
+//
+// Styles for the primary navigation menu, typically a sidebar. This includes
+// the overall menu container, list structures (ul, li), category headers,
+// and individual document links or buttons. Focus is on layout, spacing,
+// and visual presentation of menu hierarchy and interactivity.
+*/
+
+/* --- Top Level Menu Container --- */
+/* Applied to the main UL/DIV element holding the entire menu. */
+.mainmenu {
+    width:                  240px;
+    padding:                20px 0px 10px 20px; /* Top, Right, Bottom, Left */
+    list-style-type:        none;    
+}
+
+/* --- Top Level Menu Items --- */
+/* These are the direct children (e.g., LI or DIV) of .mainmenu. */
+.mainmenu-item-li {
+    /* Spacing */
+    margin:                 0; /* Resets default browser margins for LIs */
+    padding:                0px 0px 0px 0px;   /* Indentation for content within this item */
+    /* List Specific */
+    list-style:             none;
+}
+
+/* Placeholder for direct navigation links within a .mainmenu-item-li */
+.mainmenu-link-anc {
+    /* display: block; */
+    /* padding: 5px 0; */
+}
+
+/* Header for the "Documents" section within a .mainmenu-item-li */
+.mainmenu-docs-hdr-spn {
+    /* Layout & Position */
+    display:                block;
+    /* Dimensions */
+    width:                  100%;
+    /* Spacing */
+    margin:                 0;
+    padding:                0px 0px 0px 0px; 
+    text-align:             left;
+    text-decoration:        none;
+    /* Interaction */
+    cursor:                 default;
+}
+
+/* Placeholder for action buttons (e.g., "Toggle Theme") within a .mainmenu-item-li */
+/* Styles for [data-ms~="mainmenu-action-btn"] are defined elsewhere (color, background, border, font sections) */
+
+
+/* --- Document Categories List (within "Documents" item) --- */
+/* This is the UL/DIV that holds the list of document categories. */
+.mainmenu-cat-list-ul {
+    /* Spacing */
+    margin:                 20px 0px 0px 0px; 
+    padding:                0px 0px 20px 10px;   
+    /* List Specific */
+    list-style-type:        none;
+}
+
+/* --- Document List (within a Category Item) --- */
+/* This is the UL/DIV holding document links for a category. Has class .mainmenu-doc-list-ul and data-ms="mainmenu-doc-list". */
+.mainmenu-doc-list-ul{
+    /* Spacing */
+    margin:                 0px 0px 0px 0px; 
+    padding:                0px 0px 5px 0px; /* Top, Right, Bottom, Left. Horizontal padding is 0. */
+    /* List Specific */
+    list-style:             none;
+}
+
+/* --- Document Item (within Document List) --- */
+/* This is an LI/DIV for a single document link. Has class .mainmenu-doc-item-li and data-ms="mainmenu-doc-item". */
+.mainmenu-doc-item-li{
+    /* Spacing */
+    margin:                 0px 0px 0px 0px; 
+    padding:                0px 0px 0px 0px;   
+    /* List Specific */
+    list-style:             none; /* If it's an LI */
+}
+
+
+
+/*----------------------------------//
+//      Sub menu                    //
+//----------------------------------//
+// Styles for a secondary navigation menu or a distinct panel containing
+// interactive elements. Typically smaller and more focused in scope
+// compared to the main navigation menu.
+*/
 
 /* DOM Depth: 3 */
-.main-menu {
+.submenu {
     box-sizing:             border-box;
-    padding:                20px 0px 10px 20px;    
-    width:                  240px; /* Fixed width */
-    background-color:       var(--black);
-    border-width:           0px 1px 0px 1px;
-    border-style:           solid;
-    border-image-source:    linear-gradient(to top, transparent, var(--clr-bg-menu-hdr-category));    
-    border-image-slice:     1;
-    font-size:              12px;
-    font-weight:            normal;    
+    padding:                10px 2px 20px 2px;        
+    width:                  80px;
 }
 
 /* DOM Depth: 4 */
-.main-menu ul {
+.submenu .submenu-list { /* Targeting the ul with class .submenu-list */
     list-style:             none;
     padding:                0;
     margin:                 0;
-    padding-bottom:         10px;
 }
 
-/* DOM Depth: 5 */
-.main-menu > ul > li {
-    margin-bottom:          0.5rem; /* Spacing for top-level/category separation */
+/* DOM Depth: 5 (.chap-menu-item-li) */
+.chap-menu-item-li {
+    margin-bottom:          0.5rem;
+}  
+/* DOM Depth: 5 (.pdf-pge-nav-item-li) */
+.pdf-pge-nav-item-li {
+    margin-bottom:          0.5rem; 
 }
 
-/* DOM Depth: 5 */
-.main-menu > ul > li:first-child { /* The entire "Documents" section LI */
-    background-color:       var(--clr-bg-menu-hdr-main);
-}
-
-/* DOM Depth: 7 */
-.main-menu .doc-categories-list > li { /* Each category LI */
-    /* This increases space AFTER the border-bottom of a category block */
-    margin-top:             20px;
-    margin-bottom:          0.8rem; 
-    border-width:           0 0 1px 0; /* Apply width only to the bottom (top, right, bottom, left) */
-    border-style:           solid;     /* Style is needed for border-image to work */
-    border-image-source:    linear-gradient(to right, transparent, var(--clr-bg-menu-hdr-category));    
-    border-image-slice:     1;    
-}
-
-/* DOM Depth: 6 */
-.main-menu > ul > li > ul { /* Nested list (documents under a category) */
-    list-style:             none;
-    padding-left:           1.5rem; /* Indent the document list under a category */
-    margin-top:             1.0rem; /* Small space after category text/button */
-}
-
-/* DOM Depth: 7 */
-.main-menu > ul > li > ul > li { /* Document items within a category in main-menu */
-    margin-top:             0.5rem;         
-    margin-bottom:          0.5rem; /* Tighter spacing for document links */
-}
-
-/* DOM Depth: 8 */
-.main-menu .doc-categories-list .docs-list {
-    padding-left:           1rem; /* Indent document titles further */
-    margin-top:             0.0rem; /* Small space after category header */
-    padding-bottom:         20px; /* Small padding at the bottom of the list */
-    background-color:       transparent; /* Allow gradients on children to show main LI background */
-}
-
-/* DOM Depth: 6 */
-.main-menu .menu-category-header { /* This acts as a fallback or base */
-    cursor:                 default;    /* Not interactive */
-    text-decoration:        none;
-    display:                block;
-    width:                  100%;
-    text-align:             left;
-    padding:                0.4rem 0.5rem; /* Match link padding for alignment */
-    box-sizing:             border-box;
-    color:                  var(--clr-text-body);
-    background:             transparent; /* Or specific color if desired */
-    border-width:           0 0 1px 0; /* Apply width only to the bottom (top, right, bottom, left) */
-    border-style:           solid;     /* Style is needed for border-image to work */
-    border-image-source:    linear-gradient(to right, transparent, var(--clr-text-accent-primary));    
-    border-image-slice:     1;    
-    font-family:            'Manuskript Gothisch', serif;    
-    font-weight:            normal;
-    font-size:              inherit; /* Inherits from .main-menu (0.9em of body) */
-}
-
-/* DOM Depth: 6 */
-.main-menu .menu-category-header:hover {
-    background-color:       transparent;
-}
-
-/* DOM Depth: 6 */
-.main-menu > ul > li:first-child > .menu-category-header { /* Targets the "Documents" span */
-    padding:                0.5rem 0.5rem; /* Slightly more padding */
-    color:                  var(--clr-text-accent-secondary); 
-    background:             linear-gradient(to right, transparent, var(--clr-bg-menu-hdr-main));
-    font-size:              16px;
-    font-weight:            normal;
-}
-
-/* DOM Depth: 6 */
-.main-menu > ul > li:first-child > .menu-category-header:hover {
-    background-color:       var(--clr-bg-menu-hdr-main); /* Keep black background */
-}
-
-/* DOM Depth: 8 */
-.main-menu .doc-categories-list > li > .menu-category-header {
-    padding:                0.3rem 0.5rem;
-    color:                  var(--clr-text-accent-tertiary); 
-    background:             linear-gradient(to right, transparent, var(--clr-bg-menu-hdr-category));
-    font-family:            'Crimson Text', serif;    
-    font-size:              14px;
-    font-weight:            normal;
-}
-
-/* DOM Depth: 8 */
-.main-menu .doc-categories-list > li > .menu-category-header:hover {
-    background-color:       var(--clr-bg-menu-hdr-category); /* Solid on hover */
-}
-
-/* DOM Depth: 6 */
-.main-menu > ul > li > button {          /* Standalone link buttons in main-menu (if any) */
+/* DOM Depth: 6 (.chap-menu-item-btn) */
+.chap-menu-item-btn {
     cursor:                 pointer;
     text-decoration:        none;
     display:                block;
     width:                  100%;
     text-align:             left;
-    padding:                0.4rem 0.5rem; /* Smaller padding */
+    padding:                0.4rem 0.5rem;
     transition:             background 0.2s ease;
     box-sizing:             border-box;
-    color:                  var(--clr-text-panel-links);
-    background:             transparent;
-    border:                 none;
-    border-bottom:          1px solid var(--clr-border-primary);
-    font-weight:            bold;
-    font-size:              inherit; /* Inherit smaller font from parent panel */
 }
-
-/* DOM Depth: 6 */
-.main-menu > ul > li > button:hover {
-    background-color:       var(--clr-bg-interactive-hover);
-}
-
-/* DOM Depth: 10 */
-.main-menu .docs-list button { /* Document Titles */
+/* DOM Depth: 6 (.pdf-pge-nav-item-btn) */
+.pdf-pge-nav-item-btn {
     cursor:                 pointer;
     text-decoration:        none;
     display:                block;
     width:                  100%;
     text-align:             left;
-    padding:                0.25rem 0.5rem; /* Adjusted padding */
+    padding:                0.4rem 0.5rem;
     transition:             background 0.2s ease;
     box-sizing:             border-box;
-    color:                  var(--clr-text-body); /* White/light gray text */
-    background:             linear-gradient(to right, transparent, var(--clr-bg-menu-item-doc));
-    border:                 none; /* Remove default border */
-    font-family:            'Crimson Text', serif;    
-    font-size:              12px;  /* Smallest (0.9 * panel's 0.9em) */
-    font-weight:            normal; /* Differentiate from bold headers */
-}
-
-/* DOM Depth: 10 */
-.main-menu .docs-list button:hover { /* Moved from MENU ITEM STYLING */
-    color:                  var(--clr-text-panel-links);     /* Gold text on hover for highlight */
-    background-color:       var(--clr-bg-interactive-hover);
 }
 
 
 /*----------------------------------//
-//      NAVIGATION PANELS           //
-// (Styles for sub-menu and right-column, main-menu is now in its own section)
-//----------------------------------*/
+//      Right column                //
+//----------------------------------//
+// Styles for a right-hand sidebar or column area. This section is often
+// used for supplementary links, contextual information, or advertisements.
+// Includes styling for its overall container, header, and list items.
+*/
 
-.sub-menu       {   box-sizing:    border-box;  }
-.right-column   {   box-sizing:    border-box;  }
-
-.sub-menu {
-    padding:                1rem;        
-    width:                  80px; /* Fixed width */
-}
-
-.right-column {
+/* DOM Depth: 3 */
+.rht-col {
+    box-sizing:             border-box;
     padding:                1rem;    
     width:                  180px; /* More narrow links column */
 }
 
-.sub-menu ul {
+/* DOM Depth: 4 */
+.rht-col .rht-col-list { /* Targeting the ul with class .rht-col-list */
     list-style:             none;
     padding:                0;
     margin:                 0;
 }
 
-.right-column ul {
-    list-style:             none;
-    padding:                0;
-    margin:                 0;
+/* DOM Depth: 5 (.rht-col-link-item-li) */
+.rht-col-link-item-li {
+    margin-bottom:          0.5rem;
 }
 
-/* Adjusted list item margins for main-menu hierarchy */
-.main-menu > ul > li {   
-    margin-bottom:          0.5rem; 
-}
-
- /* Top-level items in main-menu (categories or standalone links) */
-.sub-menu li {  
-    margin-bottom:          0.5rem; 
-}  
-
-.right-column li {   
-    margin-bottom:          0.5rem; 
-}
-
-
-/*----------------------------------//
-//    MENU ITEM STYLING (PANELS)    //
-//----------------------------------*/
-
-
-/* Styling for CLICKABLE items (Document Links, Standalone Links in main-menu, other menus) */
-
-/* Base for clickable buttons in main-menu (if any outside docs-list) and other menus */
-/* This rule will be mostly overridden for .docs-list button for specific styling */
-.sub-menu button {          /* Standalone link buttons in main-menu (if any) */
+/* DOM Depth: 6 ([data-ms~="rht-col-link-anc"]) */
+[data-ms~="rht-col-link"] {
     cursor:                 pointer;
     text-decoration:        none;
     display:                block;
     width:                  100%;
     text-align:             left;
-    padding:                0.4rem 0.5rem; /* Smaller padding */
+    padding:                0.4rem 0.5rem;
     transition:             background 0.2s ease;
     box-sizing:             border-box;
 }
 
-.right-column a {          /* Standalone link buttons in main-menu (if any) */
-    cursor:                 pointer;
-    text-decoration:        none;
-    display:                block;
-    width:                  100%;
-    text-align:             left;
-    padding:                0.4rem 0.5rem; /* Smaller padding */
-    transition:             background 0.2s ease;
-    box-sizing:             border-box;
-}
-
-/* Hover effects for actual CLICKABLE items */
-/* .main-menu .docs-list button:hover,  (This is more specific below) */
-.sub-menu button:hover {
-    background-color:       var(--clr-bg-interactive-hover);
-}
-
-.right-column a:hover {
-    background-color:       var(--clr-bg-interactive-hover);
-}
 
 
 /*----------------------------------//
-//      DOCUMENT VIEW SECTION       //
-//----------------------------------*/
-.document-view {
+//      Document view section       //
+//----------------------------------//
+// Styles pertaining to the main content display area of a document.
+// This includes the sticky header and footer specific to the document view,
+// and the scrollable content area itself. Manages layout, positioning,
+// and overflow for an optimal reading/viewing experience.
+*/
+
+/* DOM Depth: 3 (main.doc-view) */
+.doc-view {
     flex:                   1;
-    padding:                0; /* Remove padding to allow header/footer to be flush */
+    padding:                0;
     position:               relative;
     display:                flex;
     flex-direction:         column;
-    height:                 100%; /* Ensure it uses the height from main-container */
+    height:                 100%;
 }
 
-
-.doc-header,
-.doc-footer {
-  /* Reduced vertical padding, no horizontal padding */
+/* DOM Depth: 4 (div.doc-hdr) */
+.doc-hdr {
     padding:                0.6rem 0;
     position:               sticky;
     left:                   0;
     right:                  0;
     z-index:                10;
-    text-align:             center; /* Or left, as preferred */
-    flex-shrink:            0; /* Prevent shrinking */
+    text-align:             center;
+    flex-shrink:            0;
 }
 
-.doc-header {
-    top:                    0;
-}
-
-.doc-footer {
+/* DOM Depth: 4 (div.doc-ftr) */
+.doc-ftr {
+    padding:                0.6rem 0;
+    position:               sticky;
+    left:                   0;
+    right:                  0;
+    z-index:                10;
+    text-align:             center;
+    flex-shrink:            0;
     bottom:                 0;
-    margin-top:             auto; /* Pushes footer to bottom if content is short */
+    margin-top:             auto;
 }
 
+/* DOM Depth: 4 (div.doc-content) */
 .doc-content {
-  /* Padding for the actual content area, not the header/footer */
     padding:                1rem;
     flex-grow:              1;
     overflow-y:             auto; 

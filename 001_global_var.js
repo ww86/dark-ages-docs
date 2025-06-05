@@ -19,14 +19,16 @@ var glob = {
     data: {
         // Static data, populated by other scripts, not intended for runtime modification
         docs_data               : [],
-        doc_categories          : [], // For structuring documents in the main menu
-        main_menu_cfg           : [], // New: Configuration for the main menu structure
+        doc_cat                 : [], // For structuring documents in the main menu
+        mainmenu_cfg            : [], // New: Configuration for the main menu structure
         site_links              : [],
         site_cfg                : {},
     },
 
     util: {
         pdf_ext_pge_txt_reg       : async function () { },
+        check_dom_classes         : function () { }, // Checks DOM against class constraints
+        print_dom_to_string       : function () { }, // Prints DOM structure as a commented string
         // Non-DOM related utility functions will be initialized here
     },
 
@@ -46,7 +48,7 @@ var glob = {
         pop_main_menu           : function () { },
         pop_chap_sub_menu       : function () { },
         pop_pdf_pge_nav_menu    : function () { },
-        pop_right_col_links     : function () { },
+        pop_rht_col_links       : function () { },
         set_doc_hdr             : function () { },
         set_doc_ftr             : function () { },
         set_doc_con             : function () { }, // Clears and sets innerHTML or appends an ele
@@ -56,7 +58,7 @@ var glob = {
         trg_main_menu_pop       : function () { }, // Triggers population of the main menu
         trg_chap_sub_menu_pop   : function () { }, // Triggers population of the chapter sub-menu
         trg_pdf_pge_nav_pop     : function () { }, // Triggers population of PDF page navigation menu
-        trg_right_col_pop       : function () { }, // Triggers population of the right column links
+        trg_rht_col_pop         : function () { }, // Triggers population of the right column links
         upd_doc_hdr_ftr         : async function () { }, // Updates document header/footer (e.g., for PDF page changes)
         load_doc_con            : async function () { }, // Loads main document content (HTML or PDF)
     },

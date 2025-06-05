@@ -68,8 +68,9 @@ glob.data.docs_data = [
 // Main Menu Configuration
 // -----------------------------
 
-glob.data.main_menu_cfg = [
+glob.data.mainmenu_cfg = [
   { type: 'documents', text: 'Documents' },     // This will trigger the special handling
+  { type: 'action', text: 'Print DOM to Display', action_id: 'print_dom_to_display' } // New action button
 ];
 
 
@@ -77,7 +78,7 @@ glob.data.main_menu_cfg = [
 // -----------------------------
 // Document Category Definitions
 // -----------------------------
-glob.data.doc_categories = { // Changed to an object for easier lookup by ID
+glob.data.doc_cat = { // Changed to an object for easier lookup by ID
   "primary_docs": {
     title: "Primary Documents", // Renamed for clarity
     order: 1 // Optional: for controlling display order in the menu
