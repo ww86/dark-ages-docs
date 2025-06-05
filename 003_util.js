@@ -173,18 +173,31 @@ glob.util.print_dom_to_string = function() {
 
             output += `//${indent} ${elementInfo}\n`;
 
-            // Recurse for children
-            Array.from(node.childNodes).forEach(child => {
-                output += traverse_and_print(child, indent + '  '); // Increase indent
-            });
+            // Filter for meaningful children (elements, non-empty text, comments)
+            const meaningful_children = Array.from(node.childNodes).filter(child =>
+                child.nodeType === Node.ELEMENT_NODE ||
+                (child.nodeType === Node.TEXT_NODE && child.textContent.trim().length > 0) ||
+                child.nodeType === Node.COMMENT_NODE
+            );
+
+            if (meaningful_children.length > 0) {
+                // Recurse for meaningful children
+                meaningful_children.forEach(child => {
+                    output += traverse_and_print(child, indent + '  '); // Increase indent
+                });
+                // Print closing tag if there were meaningful children
+                output += `//${indent} </${nodeName}>\n`;
+            }
+            // Add a blank line after the element's block (either after its opening tag if no children, or after its closing tag)
+            output += `//\n`;
 
         } else if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
             // Handle text nodes - show a snippet
             const textSnippet = node.textContent.trim().replace(/\s+/g, ' ').substring(0, 50) + (node.textContent.trim().length > 50 ? '...' : '');
             output += `//${indent}   #text: "${textSnippet}"\n`;
         } else if (node.nodeType === Node.COMMENT_NODE) {
-             const commentSnippet = node.textContent.trim().replace(/\s+/g, ' ').substring(0, 50) + (node.textContent.trim().length > 50 ? '...' : '');
-             output += `//${indent}   <!-- ${commentSnippet} -->\n`;
+            const commentSnippet = node.textContent.trim().replace(/\s+/g, ' ').substring(0, 50) + (node.textContent.trim().length > 50 ? '...' : '');
+            output += `//${indent}   <!-- ${commentSnippet} -->\n`;
         }
 
         return output;

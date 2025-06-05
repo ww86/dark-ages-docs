@@ -12,7 +12,7 @@ glob.data.docs_data = [
   { 
     id          :     "initial_declaration",
     title       :     "Initial Declaration",
-    category    :     "primary_docs",     
+    cat         :     "primary_docs",     
     path        :     "./docs/000_initial_declaration.pdf",
     pdf_regions : {
       // Assuming US Letter (11 inches high), 0.5 inch / 11 inch = ~0.0455
@@ -27,7 +27,7 @@ glob.data.docs_data = [
   { 
     id          :     "ic001",
     title       :     "IC 001 Status of Propositions",
-    category    :     "project_mgmt",
+    cat         :     "project_mgmt",
     path        :     "./docs/IC_001_status_of_propositions.pdf"
   },
 
@@ -35,28 +35,28 @@ glob.data.docs_data = [
   { 
     id          :     "am001",
     title       :     "AM 001 Mechanics: Locations",
-    category    :     "general_docs",
+    cat         :     "general_docs",
     path        :     "./docs/AM_001_mechanics_locations.pdf"
   },
 
   { 
     id          :     "am002",
     title       :     "AM 002 Mechanics: Damage and Soak",
-    category    :     "general_docs",
+    cat         :     "general_docs",
     path        :     "./docs/AM_002_mechanics_damage_and_soak.pdf"
   },  
 
   { 
     id          :     "am003",
     title       :     "AM 003 Mechanics: Disciplines",
-    category    :     "general_docs",
+    cat         :     "general_docs",
     path        :     "./docs/AM_003_mechanics_disciplines.pdf"
   },  
 
   { 
     id          :     "am004",
     title       :     "AM 004 Mechanics: Masquerade",
-    category    :     "general_docs",
+    cat         :     "general_docs",
     path        :     "./docs/AM_004_mechanics_masquerade.pdf"
   },    
 

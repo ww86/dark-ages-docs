@@ -13,7 +13,7 @@
     --bg-01:                #1b1b1b;
     --bg-02:                #0e0e0e;
     --bg-03:                #151515;
-    --bg-04:                #222222;
+    --bg-04:                #161212;
     --bg-05:                #2a2a2a;
     --bg-06:                #000000;
     --bg-07:                #1f1f1f;
@@ -36,24 +36,26 @@
 /*----------------------------------//
 //       Color declarations         //
 //----------------------------------//
+// Defines text colors for various elements and their states.
+// - .mainmenu-docs-hdr-spn color: Mapped from .main-menu-documents-header, consolidated.
+// - .mainmenu-action-btn color: Mapped from .mainmenu-link-anc.
 */
 
 body                                            {   color:          var(--txt-01) ;                     }
-.mainmenu-docs-hdr-spn                          {   color:          var(--txt-03) ;                     } /* Mapped from .main-menu-documents-header, consolidated */
-.mainmenu-action-btn                            {   color:          var(--txt-05) ;                     } /* Mapped from .mainmenu-link-anc */
+.mainmenu-docs-hdr-spn                          {   color:          var(--txt-03) ;                     }
+[data-ms~="mainmenu-ui-action"]                 {   color:          var(--txt-05) ;                     }
 [data-ms~="mainmenu-cat-title"]                 {   color:          var(--txt-04) ;                     }
 [data-ms~="rht-col-link"]                       {   color:          var(--txt-04) ;                     }
 .site-hdr h1                                    {   color:          var(--txt-02) ;                     }
+.rht-col-links-hdr-spn                         {   color:          var(--txt-03) ;                     }
+.mainmenu-print-dom                             {   color:          var(--txt-05) ;                     }   
 
 [data-ms~="mainmenu-doc-btn"]                   {   color:          var(--txt-01) ;                     }
 [data-ms~="mainmenu-doc-btn"]:hover             {   color:          var(--txt-05) ;                     }
 [data-ms~="mainmenu-doc-btn"][data-act="true"]  {   color:          var(--txt-05) ;                     }
 .chap-menu-item-btn                             {   color:          var(--txt-05) ;                     }
 .pdf-pge-nav-item-btn                           {   color:          var(--txt-05) ;                     }
-.mainmenu-action-btn:hover                      {   color:          var(--txt-01) ;                     }
-.mainmenu-action-btn[data-act="true"]           {   color:          var(--txt-01) ;                     }
-
-/* DOM Depth: 3 (h1 within .site-hdr) */
+[data-ms~="mainmenu-ui-action"][data-act="true"] {   color:         var(--txt-01) ;                     }
 .site-hdr h1                                    {   text-shadow:    0 0 5px var(--special-02);          }
 
 
@@ -64,31 +66,34 @@ body                                            {   color:          var(--txt-01
 // This section handles the application of background colors and gradients.
 // It covers global elements like the body, structural page sections,
 // and specific UI components, including their interactive hover states.
+// Note: .right-column-header styles were removed as the element is no longer in the DOM.
 */
 
 body                                            { background-color: var(--bg-01) ;                     }
 .doc-ftr                                        { background-color: var(--bg-04) ;                     }
 .doc-hdr                                        { background-color: var(--bg-04) ;                     }
 [data-ms~="mainmenu-cat-title"]:hover           { background-color: var(--bg-07) ;                     }
-[data-ms~="mainmenu-doc-list-ul-style"]         { background-color: transparent ;                     }
 .mainmenu-docs-hdr-spn:hover                    { background-color: var(--bg-06) ;                     }
-.mainmenu-action-btn:hover                      { background-color: var(--bg-05) ;                     }
-.mainmenu-action-btn[data-act="true"]           { background-color: var(--bg-05) ;                     }
+[data-ms~="rht-col-links-hdr-spn"]:hover        { background-color: var(--bg-06) ;                     }
+[data-ms~="mainmenu-ui-action"]:hover           { background-color: var(--bg-05) ;                     }
+[data-ms~="mainmenu-ui-action"][data-act="true"]{ background-color: var(--bg-05) ;                     }
 .site-ftr                                       { background-color: var(--bg-02) ;                     }
 .site-hdr                                       { background-color: var(--bg-02) ;                     }
-.mainmenu-docs-hdr-spn                          { background:       transparent ;                     }
-[data-ms~="mainmenu-cat-title"]                 { background:       linear-gradient(to right, var(--special-01), var(--bg-07)) ;                     }
-.mainmenu-action-btn                            { background:       transparent ;                     }
-hr                                              { background:       linear-gradient(to right, var(--border-01), var(--special-03), var(--border-01)) ;                     }
-/* .right-column-header was removed as it's not in the new DOM */
+.mainmenu-docs-hdr-spn                          { background:       transparent ;                      }
+[data-ms~="mainmenu-ui-action"]                 { background:       transparent ;                      }
+.mainmenu-print-dom                             { background-color: var(--bg-02) ;                     }                         
+.rht-col-links-hdr-spn                         { background:       transparent ;                      }
 
-.mainmenu                                       { background-color: var(--special-01) ;                     }
+hr                                              { background:       linear-gradient(to right, var(--border-01), var(--special-03), var(--border-01)) ;                     }
+[data-ms~="mainmenu-cat-title"]                 { background:       linear-gradient(to right, var(--special-01), var(--bg-07)) ;                     }
+
+.mainmenu                                       { background-color: var(--special-01) ;                }
 [data-ms~="mainmenu-doc-btn"]:hover             { background-color: var(--bg-05) ;                     }
 [data-ms~="mainmenu-doc-btn"][data-act="true"]  { background-color: var(--bg-05) ;                     }
-.rht-col                                        { background-color: var(--special-01) ;                     }
+.rht-col                                        { background-color: var(--special-01) ;                }
 [data-ms~="rht-col-link"]:hover                 { background-color: var(--bg-05) ;                     }
 [data-ms~="rht-col-link"][data-act="true"]      { background-color: var(--bg-05) ;                     }
-.submenu                                        { background-color: var(--special-01) ;                     }
+.submenu                                        { background-color: var(--special-01) ;                }
 .chap-menu-item-btn:hover                       { background-color: var(--bg-05) ;                     }
 .pdf-pge-nav-item-btn:hover                     { background-color: var(--bg-05) ;                     }
 .chap-menu-item-btn[data-act="true"]            { background-color: var(--bg-05) ;                     }
@@ -99,6 +104,7 @@ hr                                              { background:       linear-gradi
 .pdf-pge-nav-item-btn                           { background:       transparent ;                     }
 
 [data-ms~="mainmenu-doc-btn"]                   {
+    border:             none;
     -webkit-appearance: none;
     -moz-appearance:    none;
     appearance:         none;
@@ -106,6 +112,11 @@ hr                                              { background:       linear-gradi
     background-image:   linear-gradient(to right, var(--special-01), var(--bg-08));
 }
 
+[data-ms~="mainmenu-ui-action"]                 {
+    -webkit-appearance: none;
+    -moz-appearance:    none;
+    appearance:         none;
+}
 
 
 /*----------------------------------//
@@ -118,28 +129,23 @@ hr                                              { background:       linear-gradi
 // to enhance visual structure and delineation.
 */
 
-/* DOM Depth: 2 */
 hr {
     border:                 0;
 }
-/* DOM Depth: 2 */
 .site-hdr {
     border-top:             1px solid var(--border-01);
     border-bottom:          1px solid var(--border-01);
 }
-/* DOM Depth: 2 */
 .site-ftr {
     border-top:             1px solid var(--border-01);
 }
 
-/* DOM Depth: 3 */
 .mainmenu {
     border-width:           0px 1px 0px 1px;
     border-style:           solid;
     border-image-source:    linear-gradient(to top, transparent, var(--bg-07));    
     border-image-slice:     1;
 }
-/* DOM Depth: 6 (.mainmenu-docs-hdr-spn) */
 .mainmenu-docs-hdr-spn {
     border-width:           0 0 1px 0;
     border-style:           solid;
@@ -147,60 +153,42 @@ hr {
     border-image-source:    linear-gradient(to right, var(--special-01), var(--txt-02));
     border-image-slice:     1;    
 }
-/* DOM Depth: 6 (.mainmenu-action-btn) */
-.mainmenu-action-btn {
-    border:                 none;
-    border-bottom:          1px solid var(--border-01);
-}
-/* DOM Depth: 7 (.mainmenu-cat-item-li) */
-.mainmenu-cat-item-li {
-    border-width:           0 0 1px 0;
-    border-style:           solid;
-    border-color:           transparent;
-    border-image-source:    linear-gradient(to right, var(--special-01), var(--bg-07));
-    border-image-slice:     1;    
-}
-/* DOM Depth: 10 ([data-ms~="mainmenu-doc-btn"]) */
-[data-ms~="mainmenu-doc-btn"] {
-    border:                 none;
+[data-ms~="mainmenu-ui-action"] {
+    border:                 none; /* Explicitly remove border */
 }
 
-/* DOM Depth: 3 */
 .submenu {
     border-width:           0px 1px 0px 1px;
     border-style:           solid;
     border-image-source:    linear-gradient(to top, transparent, var(--bg-07));
     border-image-slice:     1;
 }
-/* DOM Depth: 6 (.chap-menu-item-btn) */
 .chap-menu-item-btn {
     border:                 none;
     border-bottom:          1px solid var(--border-01);
 }
-/* DOM Depth: 6 (.pdf-pge-nav-item-btn) */
 .pdf-pge-nav-item-btn {
     border:                 none;
     border-bottom:          1px solid var(--border-01);
 }
 
-/* DOM Depth: 3 */
 .rht-col {
     border-width:           0px 1px 0px 1px;
     border-style:           solid;
     border-image-source:    linear-gradient(to top, transparent, var(--bg-07));
     border-image-slice:     1;
 }
-/* DOM Depth: 6 ([data-ms~="rht-col-link-anc"]) */
-[data-ms~="rht-col-link-anc"] {
-    border:                 none;
-    border-bottom:          1px solid var(--border-01);
+.rht-col-links-hdr-spn {
+    border-width:           0 0 1px 0;
+    border-style:           solid;
+    border-color:           transparent;
+    border-image-source:    linear-gradient(to right, var(--special-01), var(--txt-02));
+    border-image-slice:     1;    
 }
 
-/* DOM Depth: 4 */
 .doc-hdr {
     border-bottom:          1px solid var(--border-02);
 }
-/* DOM Depth: 4 */
 .doc-ftr {
     border-top:             1px solid var(--border-02);
 }
@@ -210,6 +198,7 @@ hr {
 /*----------------------------------//
 //       Font families              //
 //----------------------------------//
+// Defines font families for various text elements across the site.
 */
 body                                {   font-family:    'Crimson Text', serif;          }
 .site-hdr h1                        {   font-family:    'Tangerine', cursive;           }
@@ -217,13 +206,16 @@ body                                {   font-family:    'Crimson Text', serif;  
 [data-ms~="mainmenu-cat-title"]     {   font-family:    'Crimson Text', serif;          }
 [data-ms~="mainmenu-doc-btn"]       {   font-family:    'Crimson Text', serif;          }
 [data-ms~="rht-col-link"]           {   font-family:    'Crimson Text', serif;          }
+.rht-col-links-hdr-spn             {   font-family:    'Manuskript Gothisch', serif;   }
 .rht-col                            {   font-family:    'Crimson Text', serif;          }
+.mainmenu-print-dom                 {   font-family:    'Crimson Text', serif;          }
 
 
 
 /*----------------------------------//
 //       Font sizes                 //
 //----------------------------------//
+// Specifies font sizes for different components and text elements.
 */
 [data-ms~="mainmenu-cat-title"]     {   font-size:      14px      ;                     }
 .doc-ftr                            {   font-size:      0.95em    ;                     }
@@ -231,9 +223,10 @@ body                                {   font-family:    'Crimson Text', serif;  
 .mainmenu                           {   font-size:      12px      ;                     }
 [data-ms~="mainmenu-doc-btn"]       {   font-size:      12px      ;                     }
 .mainmenu-docs-hdr-spn              {   font-size:      16px      ;                     }
-.mainmenu-action-btn                {   font-size:      inherit   ;                     }
+[data-ms~="mainmenu-ui-action"]     {   font-size:      inherit   ;                     }
 .rht-col                            {   font-size:      12px      ;                     }
 [data-ms~="rht-col-link"]           {   font-size:      14px      ;                     }
+.rht-col-links-hdr-spn             {   font-size:      16px      ;                     }
 .site-ftr                           {   font-size:      12px      ;                     }
 .site-hdr h1                        {   font-size:      48px      ;                     }
 .submenu                            {   font-size:      10px      ;                     }
@@ -245,14 +238,16 @@ body                                {   font-family:    'Crimson Text', serif;  
 /*----------------------------------//
 //       Font weights               //
 //----------------------------------//
+// Sets font weights (e.g., normal, bold) for various text elements.
 */
 [data-ms~="mainmenu-cat-title"]     {   font-weight:    normal    ;                     }
 [data-ms~="mainmenu-doc-btn"]       {   font-weight:    normal    ;                     }
 .mainmenu                           {   font-weight:    normal    ;                     }
 .mainmenu-docs-hdr-spn              {   font-weight:    normal    ;                     }
-.mainmenu-action-btn                {   font-weight:    bold      ;                     }
+[data-ms~="mainmenu-ui-action"]     {   font-weight:    bold      ;                     }
 .rht-col                            {   font-weight:    normal    ;                     }
 [data-ms~="rht-col-link"]           {   font-weight:    bold      ;                     }
+.rht-col-links-hdr-spn             {   font-weight:    normal    ;                     }
 .site-hdr h1                        {   font-weight:    normal    ;                     }
 .submenu                            {   font-weight:    normal    ;                     }
 .chap-menu-item-btn                 {   font-weight:    bold      ;                     }
@@ -266,16 +261,14 @@ body                                {   font-family:    'Crimson Text', serif;  
 // Contains foundational CSS resets (e.g., for body margin) and global styles
 */
 
-/* DOM Depth: 1 */
 body {
     margin:                 0;
     box-sizing:             border-box;
 }
 
-/* DOM Depth: 2 */
 hr {
-    height:                 1px;
-    margin:                 1rem 0;
+    height:                 1px; /* The actual line */
+    padding:                0px 0px 0px 0px; /* Replaces margin for spacing, background will fill this */
 }
 
 
@@ -289,27 +282,24 @@ hr {
 // that organize the overall page.
 */
 
-/* DOM Depth: 2 */
 .site-hdr {
-    height:                 54px;  
+    height:                 54px;
+    display:                flex;
+    align-items:            center;
+    justify-content:        center;
     text-align:             center;
-    padding:                6px 4px 6px 4px;
+    padding:                4px 4px 0px 4px; /* Adjusted vertical padding */
 }
 
-/* DOM Depth: 3 */
 .site-hdr h1 {
-    padding:                8px 4px 4px 4px;    
-    margin:                 0;
+    padding:                0px 4px 0px 4px; /* Adjusted vertical padding */
 }
 
-/* DOM Depth: 2 */
 .site-ftr {
     height:                 22px;
     text-align:             center;
-    padding:                2px 4px 6px 4px;
 }
 
-/* DOM Depth: 2 */
 .main-cntnr {
     display:                flex;
     height:                 calc(100vh - 130px);
@@ -322,86 +312,38 @@ hr {
 //----------------------------------//
 // data-ms attribute defines a pseudo-class 
 // used when the constraint on the classes 
-// becomes an obstacle
+// becomes an obstacle.
+//
+// - [data-ms~="mainmenu-cat-title"]:
+//   - Background is defined in the "Background color declarations" section.
+//   - Typography (color, font-family, font-size) is defined in their respective sections.
+// - [data-ms~="mainmenu-doc-btn"]: This is the BUTTON linking to a document.
+//   - Borders are defined in the "Border (+color) declarations" section.
+//   - Background is defined in the "Background color declarations" section.
+//   - Typography (color, font-family, font-size) is defined in their respective sections.
 */
 
 [data-act="true"] {
     outline: 1px solid var(--txt-05);
-    outline-offset: 2px;
-}
-
-[data-ms~="mainmenu-action-btn"] {
-    /* display: block; */
-    /* width: 100%; */
-}
-
-[data-ms~="mainmenu-cat-item"] { /* Targets .mainmenu-cat-item-li */
-    /* Spacing */
-    margin:                 0px 0px 0px 0px; 
-    padding:                0px 0px 20px 0px;   
-    /* Borders - Defined in "Border (+color) declarations" section for .mainmenu-cat-item-li */
-    /* List Specific */
-    list-style:             none; /* If it's an LI */
+    outline-offset: 0px;
 }
 
 [data-ms~="mainmenu-cat-title"] {
-    /* Layout & Position */
     display:                block;
-    /* Spacing */
-    margin:                 0px 0px;      /* Vertical spacing, horizontal 0 to allow full width effects */
-    padding:                5px 5px;  /* Inner spacing for text */
-    /* Borders */
+    padding:                5px 5px 5px 10px;
     border-width:           0 0 1px 0;
     border-style:           solid;
     border-image-source:    linear-gradient(to right, transparent, var(--txt-02));
     border-image-slice:     1;
-    /* Background - Defined in "Background color declarations" section */
-    /* Typography */
-    /* color: var(--txt-04); */ /* Defined in "Color declarations" */
-    /* font-family: 'Manuskript Gothisch', serif; */ /* Defined in "Font families" */
-    /* font-size: 14px; */ /* Defined in "Font sizes" */
-    text-decoration:        none;
-    /* Interaction */
     cursor:                 default;
 }
-
-[data-ms~="mainmenu-doc-list"] {
-    /* Spacing */
-    margin:                 0px 0px 0px 0px; 
-    padding:                0px 0px 5px 0px; /* Top, Right, Bottom, Left. Horizontal padding is 0. */
-    /* List Specific */
-    list-style:             none;
-}
-
-[data-ms~="mainmenu-doc-item-li"] {
-    /* Spacing */
-    margin:                 0px 0px 0px 0px; 
-    padding:                0px 0px 0px 0px;   
-    /* List Specific */
-    list-style:             none; /* If it's an LI */
-}
-
-/* --- Document Button (within Document Item) --- */
-/* This is the BUTTON linking to a document. Has data-ms="mainmenu-doc-btn". */
 [data-ms~="mainmenu-doc-btn"] {
-    /* Layout & Position */
     display:                block;
-    /* Dimensions */
     width:                  100%;
-    /* Spacing */
-    margin:                 0px 0px 0px 0px; 
-    padding:                5px 0px 5px 22px;   
-    /* Borders - Defined in "Border (+color) declarations" section */
-    /* Background - Defined in "Background color declarations" section */
-    /* Typography */
-    /* color: var(--txt-01); */ /* Defined in "Color declarations" */
-    /* font-family: 'Crimson Text', serif; */ /* Defined in "Font families" */
-    /* font-size: 12px; */ /* Defined in "Font sizes" */
+    padding:                5px 0px 5px 25px;
     text-align:             left;
     text-decoration:        none;
-    /* Interaction */
     cursor:                 pointer;
-    /* Effects */
     transition:             background 0.2s ease;
 }
 
@@ -415,82 +357,37 @@ hr {
 // the overall menu container, list structures (ul, li), category headers,
 // and individual document links or buttons. Focus is on layout, spacing,
 // and visual presentation of menu hierarchy and interactivity.
+//
+// Component breakdown:
+// - .mainmenu: Top Level Menu Container. Applied to the main UL/DIV element holding the entire menu.
+// - .mainmenu-docs-hdr-spn: Header for the "Documents" section.
+// - Action Buttons (e.g., "Toggle Theme") identified by data-ms (e.g., [data-ms~="mainmenu-ui-action"]):
+//   Styles for associated elements like [data-ms~="mainmenu-action-btn"] are defined in dedicated
+//   sections (color, background, border, font).
 */
 
-/* --- Top Level Menu Container --- */
-/* Applied to the main UL/DIV element holding the entire menu. */
 .mainmenu {
-    width:                  240px;
-    padding:                20px 0px 10px 20px; /* Top, Right, Bottom, Left */
-    list-style-type:        none;    
+    width:                  220px;
+    padding:                20px 0px 10px 20px;
 }
 
-/* --- Top Level Menu Items --- */
-/* These are the direct children (e.g., LI or DIV) of .mainmenu. */
-.mainmenu-item-li {
-    /* Spacing */
-    margin:                 0; /* Resets default browser margins for LIs */
-    padding:                0px 0px 0px 0px;   /* Indentation for content within this item */
-    /* List Specific */
-    list-style:             none;
+.mainmenu-cat-block {
+    padding:                0px 0px 20px 0px;
 }
 
-/* Placeholder for direct navigation links within a .mainmenu-item-li */
-.mainmenu-link-anc {
-    /* display: block; */
-    /* padding: 5px 0; */
-}
-
-/* Header for the "Documents" section within a .mainmenu-item-li */
 .mainmenu-docs-hdr-spn {
-    /* Layout & Position */
     display:                block;
-    /* Dimensions */
     width:                  100%;
-    /* Spacing */
-    margin:                 0;
-    padding:                0px 0px 0px 0px; 
+    padding:                0px 0px 0px 0px;
+    margin:                 0px 0px 20px 0px;
     text-align:             left;
-    text-decoration:        none;
-    /* Interaction */
     cursor:                 default;
 }
 
-/* Placeholder for action buttons (e.g., "Toggle Theme") within a .mainmenu-item-li */
-/* Styles for [data-ms~="mainmenu-action-btn"] are defined elsewhere (color, background, border, font sections) */
-
-
-/* --- Document Categories List (within "Documents" item) --- */
-/* This is the UL/DIV that holds the list of document categories. */
-.mainmenu-cat-list-ul {
-    /* Spacing */
-    margin:                 20px 0px 0px 0px; 
-    padding:                0px 0px 20px 10px;   
-    /* List Specific */
-    list-style-type:        none;
+.mainmenu-print-dom {
+    margin-top:             50px;
+    padding:                5px 5px 5px 5px;
 }
-
-/* --- Document List (within a Category Item) --- */
-/* This is the UL/DIV holding document links for a category. Has class .mainmenu-doc-list-ul and data-ms="mainmenu-doc-list". */
-.mainmenu-doc-list-ul{
-    /* Spacing */
-    margin:                 0px 0px 0px 0px; 
-    padding:                0px 0px 5px 0px; /* Top, Right, Bottom, Left. Horizontal padding is 0. */
-    /* List Specific */
-    list-style:             none;
-}
-
-/* --- Document Item (within Document List) --- */
-/* This is an LI/DIV for a single document link. Has class .mainmenu-doc-item-li and data-ms="mainmenu-doc-item". */
-.mainmenu-doc-item-li{
-    /* Spacing */
-    margin:                 0px 0px 0px 0px; 
-    padding:                0px 0px 0px 0px;   
-    /* List Specific */
-    list-style:             none; /* If it's an LI */
-}
-
-
 
 /*----------------------------------//
 //      Sub menu                    //
@@ -500,48 +397,29 @@ hr {
 // compared to the main navigation menu.
 */
 
-/* DOM Depth: 3 */
 .submenu {
     box-sizing:             border-box;
     padding:                10px 2px 20px 2px;        
     width:                  80px;
 }
 
-/* DOM Depth: 4 */
-.submenu .submenu-list { /* Targeting the ul with class .submenu-list */
-    list-style:             none;
-    padding:                0;
-    margin:                 0;
-}
-
-/* DOM Depth: 5 (.chap-menu-item-li) */
-.chap-menu-item-li {
-    margin-bottom:          0.5rem;
-}  
-/* DOM Depth: 5 (.pdf-pge-nav-item-li) */
-.pdf-pge-nav-item-li {
-    margin-bottom:          0.5rem; 
-}
-
-/* DOM Depth: 6 (.chap-menu-item-btn) */
 .chap-menu-item-btn {
     cursor:                 pointer;
     text-decoration:        none;
     display:                block;
     width:                  100%;
     text-align:             left;
-    padding:                0.4rem 0.5rem;
+    padding:                6px 8px 6px 8px; /* 0.4rem = 6px, 0.5rem = 8px */
     transition:             background 0.2s ease;
     box-sizing:             border-box;
 }
-/* DOM Depth: 6 (.pdf-pge-nav-item-btn) */
 .pdf-pge-nav-item-btn {
     cursor:                 pointer;
     text-decoration:        none;
     display:                block;
     width:                  100%;
     text-align:             left;
-    padding:                0.4rem 0.5rem;
+    padding:                6px 8px 6px 8px; /* 0.4rem = 6px, 0.5rem = 8px */
     transition:             background 0.2s ease;
     box-sizing:             border-box;
 }
@@ -555,33 +433,29 @@ hr {
 // Includes styling for its overall container, header, and list items.
 */
 
-/* DOM Depth: 3 */
 .rht-col {
     box-sizing:             border-box;
-    padding:                1rem;    
-    width:                  180px; /* More narrow links column */
+    padding:                16px 16px 16px 16px; /* 1rem = 16px */
+    width:                  220px;
 }
 
-/* DOM Depth: 4 */
-.rht-col .rht-col-list { /* Targeting the ul with class .rht-col-list */
-    list-style:             none;
-    padding:                0;
-    margin:                 0;
+.rht-col-links-hdr-spn {
+    display:                block;
+    width:                  100%;
+    padding:                0px 0px 0px 0px;
+    margin:                 0px 0px 10px 0px; /* Adjusted bottom margin for context */
+    text-align:             left;
+    cursor:                 default;
+    box-sizing:             border-box; /* Ensure padding/border don't expand width */
 }
 
-/* DOM Depth: 5 (.rht-col-link-item-li) */
-.rht-col-link-item-li {
-    margin-bottom:          0.5rem;
-}
-
-/* DOM Depth: 6 ([data-ms~="rht-col-link-anc"]) */
 [data-ms~="rht-col-link"] {
     cursor:                 pointer;
     text-decoration:        none;
     display:                block;
     width:                  100%;
     text-align:             left;
-    padding:                0.4rem 0.5rem;
+    padding:                6px 8px 6px 8px; /* 0.4rem = 6px, 0.5rem = 8px */
     transition:             background 0.2s ease;
     box-sizing:             border-box;
 }
@@ -595,21 +469,22 @@ hr {
 // This includes the sticky header and footer specific to the document view,
 // and the scrollable content area itself. Manages layout, positioning,
 // and overflow for an optimal reading/viewing experience.
+//
+// - Margins for block elements (p, h2) directly inside .doc-hdr are reset
+//   to prevent excessive spacing.
 */
 
-/* DOM Depth: 3 (main.doc-view) */
 .doc-view {
     flex:                   1;
-    padding:                0;
+    padding:                0px 0px 0px 0px;
     position:               relative;
     display:                flex;
     flex-direction:         column;
     height:                 100%;
 }
 
-/* DOM Depth: 4 (div.doc-hdr) */
 .doc-hdr {
-    padding:                0.6rem 0;
+    padding:                10px 0px 10px 0px; 
     position:               sticky;
     left:                   0;
     right:                  0;
@@ -617,23 +492,22 @@ hr {
     text-align:             center;
     flex-shrink:            0;
 }
+.doc-hdr > p {} 
+.doc-hdr > h2 {} 
 
-/* DOM Depth: 4 (div.doc-ftr) */
 .doc-ftr {
-    padding:                0.6rem 0;
+    padding:                10px 0px 10px 0px; 
     position:               sticky;
     left:                   0;
     right:                  0;
     z-index:                10;
     text-align:             center;
     flex-shrink:            0;
-    bottom:                 0;
-    margin-top:             auto;
+    bottom:                 0; 
 }
 
-/* DOM Depth: 4 (div.doc-content) */
 .doc-content {
-    padding:                1rem;
+    padding:                16px 16px 16px 16px; 
     flex-grow:              1;
     overflow-y:             auto; 
 }

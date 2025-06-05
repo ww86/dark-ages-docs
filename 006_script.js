@@ -14,12 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
     //          This improves performance by avoiding repeated querySelector calls and centralizes element selection.
     // Structure: Constants are declared for each main UI panel and content area.
 
-    const mainmenu_ul      = document.querySelector('.mainmenu ul');
-    const submenu_ul       = document.querySelector('.submenu ul');
-    const rht_col_ul      = document.querySelector('.rht-col ul');
-    const doc_hdr_div       = document.querySelector('.doc-hdr');
-    const doc_con_div       = document.querySelector('.doc-content'); // Corrected class from CSS
-    const doc_ftr_div       = document.querySelector('.doc-ftr');
+    const mainmenu          = document.querySelector('.mainmenu');
+    const submenu           = document.querySelector('.submenu');
+    const rht_col           = document.querySelector('.rht-col');
+    const doc_hdr           = document.querySelector('.doc-hdr');
+    const doc_con           = document.querySelector('.doc-content'); // Corrected class from CSS
+    const doc_ftr           = document.querySelector('.doc-ftr');
  
 
     // -----------------------------
@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
     //            `evt_handlers_bndl` will hold references to the event handler functions defined below.
 
     const dom_eles_bndl = {
-        mainmenu_ul, submenu_ul, rht_col_ul, // Though mainmenu_ul and rht_col_ul are often passed directly
-        doc_hdr_div, doc_con_div, doc_ftr_div
+        mainmenu, submenu, rht_col,
+        doc_hdr, doc_con, doc_ftr
     };
 
     // Forward declare evt_handlers_bndl, define after handlers
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const doc_data = glob.data.docs_data.find(doc => doc.id === doc_id);
         let first_chap_id;
 
-        if (mainmenu_ul) glob.dom.clr_act(mainmenu_ul); // Clear active from all main menu buttons
+        if (mainmenu) glob.dom.clr_act(mainmenu); // Clear active from all main menu buttons
         if (clicked_btn_ele) glob.dom.set_act_btn(clicked_btn_ele); // Set current one active
 
         if (doc_data && doc_data.chapters && doc_data.chapters.length > 0) {
@@ -65,18 +65,18 @@ document.addEventListener('DOMContentLoaded', () => {
             first_chap_id = doc_data.id; // Or a conventional ID like "main_content"
             glob.ui.load_doc_con(doc_id, first_chap_id, dom_eles_bndl, evt_handlers_bndl);
         } else if (doc_data) {
-            glob.ui.set_doc_con(doc_con_div, `<p>Content for '${doc_data.title}' is not available or has no chapters.</p>`);
-            glob.ui.set_doc_hdr(doc_hdr_div, doc_data.default_hdr_con || `<h2>${doc_data.title}</h2>`);
-            glob.ui.set_doc_ftr(doc_ftr_div, doc_data.default_ftr_con || "End of Document");
-            if (submenu_ul) submenu_ul.innerHTML = ''; // Clear sub-menu
+            glob.ui.set_doc_con(doc_con, `<p>Content for '${doc_data.title}' is not available or has no chapters.</p>`);
+            glob.ui.set_doc_hdr(doc_hdr, doc_data.default_hdr_con || `<h2>${doc_data.title}</h2>`);
+            glob.ui.set_doc_ftr(doc_ftr, doc_data.default_ftr_con || "End of Document");
+            if (submenu) submenu.innerHTML = ''; // Clear sub-menu
         } else {
-            glob.ui.display_err_in_ele(doc_con_div, `Document with ID '${doc_id}' not found.`);
+            glob.ui.display_err_in_ele(doc_con, `Document with ID '${doc_id}' not found.`);
         }
     }
 
     function handle_chap_submenu_click(chap_id, clicked_btn_ele) {
         if (glob.heap.curr_doc_id) {
-            if (submenu_ul) glob.dom.clr_act(submenu_ul);
+            if (submenu) glob.dom.clr_act(submenu);
             if (clicked_btn_ele) glob.dom.set_act_btn(clicked_btn_ele);
             glob.ui.load_doc_con(glob.heap.curr_doc_id, chap_id, dom_eles_bndl, evt_handlers_bndl);
         } else {
@@ -85,9 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handle_pdf_pge_link_click(pge_num, clicked_btn_ele) {
-        const pdf_frame = doc_con_div.querySelector('iframe'); // Assuming PDF is in an iframe
+        const pdf_frame = doc_con.querySelector('iframe'); // Assuming PDF is in an iframe
 
-        if (submenu_ul) glob.dom.clr_act(submenu_ul);
+        if (submenu) glob.dom.clr_act(submenu);
         if (clicked_btn_ele) glob.dom.set_act_btn(clicked_btn_ele);
 
         if (pdf_frame && glob.heap.curr_pdf_basesrc) {
@@ -114,19 +114,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handle_mainmenu_nav_link_click(href, clicked_anc_ele) {
-        if (mainmenu_ul) glob.dom.clr_act(mainmenu_ul); // Clear active from all items in this menu
+        if (mainmenu) glob.dom.clr_act(mainmenu); // Clear active from all items in this menu
         if (clicked_anc_ele) glob.dom.set_act_btn(clicked_anc_ele); // Set current anchor active
-        glob.ui.set_doc_con(doc_con_div, `<p>Navigating to: ${href}. Content to be loaded.</p>`);
+        glob.ui.set_doc_con(doc_con, `<p>Navigating to: ${href}. Content to be loaded.</p>`);
     }
 
     function handle_rht_col_link_click(href, clicked_anc_ele) {
-        if (rht_col_ul) glob.dom.clr_act(rht_col_ul); // Clear active from all items in this menu
+        if (rht_col) glob.dom.clr_act(rht_col); // Clear active from all items in this menu
         if (clicked_anc_ele) glob.dom.set_act_btn(clicked_anc_ele); // Set current anchor active
-        glob.ui.set_doc_con(doc_con_div, `<p>External link: ${href}. Content to be loaded.</p>`);   
+        glob.ui.set_doc_con(doc_con, `<p>External link: ${href}. Content to be loaded.</p>`);   
     }
 
     function handle_mainmenu_action_btn_click(action_id, clicked_btn_ele) {
-        if (mainmenu_ul) glob.dom.clr_act(mainmenu_ul); // Clear active from all main menu buttons
+        if (mainmenu) glob.dom.clr_act(mainmenu); // Clear active from all main menu buttons
         if (clicked_btn_ele) glob.dom.set_act_btn(clicked_btn_ele); // Set current one active
 
         if (action_id === 'print_dom_to_display') {
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             preElement.style.whiteSpace = 'pre-wrap'; // Preserve formatting and wrap lines
             preElement.style.wordWrap = 'break-word'; // Break long words
             preElement.style.fontFamily = 'monospace'; // Use a monospace font
-            glob.ui.set_doc_con(doc_con_div, preElement);
+            glob.ui.set_doc_con(doc_con, preElement);
         } else {
             console.warn(`[handle_mainmenu_action_btn_click] Unknown action_id: ${action_id}`);
         }
@@ -160,8 +160,8 @@ document.addEventListener('DOMContentLoaded', () => {
         handle_mainmenu_action_btn_click // Add new handler to the bundle
     };
 
-    glob.ui.trg_mainmenu_pop(mainmenu_ul, evt_handlers_bndl.handle_mainmenu_doc_btn_click, evt_handlers_bndl.handle_mainmenu_nav_link_click, evt_handlers_bndl.handle_mainmenu_action_btn_click);
-    glob.ui.trg_rht_col_pop(rht_col_ul); // rht_col_ul links don't need active state management via this handler bundle currently
+    glob.ui.trg_mainmenu_pop(mainmenu, evt_handlers_bndl.handle_mainmenu_doc_btn_click, evt_handlers_bndl.handle_mainmenu_nav_link_click, evt_handlers_bndl.handle_mainmenu_action_btn_click);
+    glob.ui.trg_rht_col_pop(rht_col); // rht_col links don't need active state management via this handler bundle currently
 
     if (glob.data.site_cfg && glob.data.site_cfg.default_doc && glob.data.site_cfg.default_chap) {
         const default_doc_id = glob.data.site_cfg.default_doc;
@@ -176,14 +176,14 @@ document.addEventListener('DOMContentLoaded', () => {
         glob.ui.load_doc_con(default_doc_id, default_chap_id_to_load, dom_eles_bndl, evt_handlers_bndl);
         // Attempt to set active state for the default document button in the main menu
         setTimeout(() => { // Allow menu to populate
-            const default_doc_btn = mainmenu_ul ? mainmenu_ul.querySelector(`[data-ms="mainmenu-doc-btn"][data-doc-id="${default_doc_id}"]`) : null; // Use data-ms for selection
+            const default_doc_btn = mainmenu ? mainmenu.querySelector(`[data-ms="mainmenu-doc-btn"][data-doc-id="${default_doc_id}"]`) : null; // Use data-ms for selection
             if (default_doc_btn) {
-                if (mainmenu_ul) glob.dom.clr_act(mainmenu_ul); // Clear active from other doc buttons if any
+                if (mainmenu) glob.dom.clr_act(mainmenu); // Clear active from other doc buttons if any
                 glob.dom.set_act_btn(default_doc_btn);
             }
         }, 100);
     } else {
-        glob.ui.set_doc_con(doc_con_div, "");
+        glob.ui.set_doc_con(doc_con, "");
     }    
 
     glob.util.check_dom_classes();
