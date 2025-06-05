@@ -358,8 +358,8 @@ glob.ui.upd_doc_hdr_ftr = async function(pdf_doc_obj, pge_num, total_pges, doc_d
 // Structure: If 'pdf_doc_obj' is provided, attempts to use glob.util.pdf_ext_pge_txt_reg for dynamic content.
 //            Uses 'doc_data_for_fallback' (containing default header/footer text like doc_data.doc_hdr_con)
 //            if PDF extraction fails or is not applicable.
-//            Updates the DOM elements in 'dom_eles_bndl' (doc_hdr_div, doc_ftr_div).
-    const { doc_hdr_div, doc_ftr_div } = dom_eles_bndl;
+//            Updates the DOM elements in 'dom_eles_bndl' (doc_hdr, doc_ftr).
+    const { doc_hdr, doc_ftr } = dom_eles_bndl;
     let default_hdr = doc_data_for_fallback?.default_hdr_con || (doc_data_for_fallback?.title ? `<h2>${doc_data_for_fallback.title}</h2>` : 'Document Header');
     let default_ftr = doc_data_for_fallback?.default_ftr_con || 'Document Footer';
     let num_pges_display = total_pges || (pdf_doc_obj ? pdf_doc_obj.numPages : 'N/A');
@@ -383,8 +383,8 @@ glob.ui.upd_doc_hdr_ftr = async function(pdf_doc_obj, pge_num, total_pges, doc_d
     const final_ftr_base_html = extracted_ftr_text ? `<p>${extracted_ftr_text}</p>` : default_ftr;
     const final_ftr_html = `${final_ftr_base_html}<span> (Page ${pge_num || 'N/A'} of ${num_pges_display})</span>`;
 
-    glob.ui.set_doc_hdr(doc_hdr_div, final_hdr_html);
-    glob.ui.set_doc_ftr(doc_ftr_div, final_ftr_html);
+    glob.ui.set_doc_hdr(doc_hdr, final_hdr_html);
+    glob.ui.set_doc_ftr(doc_ftr, final_ftr_html);
 };
 
 glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handlers_bndl) {
@@ -397,12 +397,12 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
 //            Accepts bundles for DOM elements and event handlers to pass down.
 //            Will contain local helper functions like _load_html_chap_con_impl and _load_pdf_chap_con_impl
 //            which receive all necessary data (doc_data, chap_data, dom_eles, evt_handlers) as parameters.
-    const { doc_hdr_div, doc_con_div, doc_ftr_div, submenu: submenu_cntnr_ele } = dom_eles_bndl;
+    const { doc_hdr, doc_con, doc_ftr, submenu: submenu_cntnr_ele } = dom_eles_bndl;
     const doc_data = glob.data.docs_data.find(doc => doc.id === doc_id);
     let chap_data_obj, content_file_path; 
 
     if (!doc_data) {
-        glob.ui.display_err_in_ele(doc_con_div, `Document data not found for ID: ${doc_id}`);
+        glob.ui.display_err_in_ele(doc_con, `Document data not found for ID: ${doc_id}`);
         return;
     }
 
@@ -411,7 +411,7 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
     if (doc_data.chapters && doc_data.chapters.length > 0) {
         chap_data_obj = doc_data.chapters.find(ch => ch.id === chap_id);
         if (!chap_data_obj) {
-            glob.ui.display_err_in_ele(doc_con_div, `Chapter ID '${chap_id}' not found in document '${doc_data.title}'.`);
+            glob.ui.display_err_in_ele(doc_con, `Chapter ID '${chap_id}' not found in document '${doc_data.title}'.`);
             return;
         }
     } else if (doc_data.path) {
@@ -419,7 +419,7 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
         // The 'chap_id' passed might be a conventional one like "main_content" or the doc_id itself.
         chap_data_obj = { id: chap_id, title: doc_data.title, con_file: doc_data.path };
     } else {
-        glob.ui.display_err_in_ele(doc_con_div, `No content (chapters or path) defined for document '${doc_data.title}'.`);
+        glob.ui.display_err_in_ele(doc_con, `No content (chapters or path) defined for document '${doc_data.title}'.`);
         return;
     }
 
@@ -471,9 +471,9 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
             // Get the modified HTML with IDs
             const modified_html_con = temp_div.innerHTML;
 
-            glob.ui.set_doc_hdr(doc_hdr_div, chap_data_obj.title ? `<h2>${chap_data_obj.title}</h2>` : (doc_data.default_hdr_con || `<h2>${doc_data.title}</h2>`));
-            glob.ui.set_doc_con(doc_con_div, modified_html_con);
-            glob.ui.set_doc_ftr(doc_ftr_div, doc_data.default_ftr_con || "End of Section");
+            glob.ui.set_doc_hdr(doc_hdr, chap_data_obj.title ? `<h2>${chap_data_obj.title}</h2>` : (doc_data.default_hdr_con || `<h2>${doc_data.title}</h2>`));
+            glob.ui.set_doc_con(doc_con, modified_html_con);
+            glob.ui.set_doc_ftr(doc_ftr, doc_data.default_ftr_con || "End of Section");
 
             // Populate ankh submenu if references were found
             glob.ui.pop_ankh_submenu(submenu_cntnr_ele, ankh_references, evt_handlers_bndl.handle_ankh_submenu_click);
@@ -483,7 +483,7 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
 
         } catch (err) {
             console.error("Error loading HTML chapter content:", err);
-            glob.ui.display_err_in_ele(doc_con_div, `Failed to load content for '${chap_data_obj.title}'.<br>${err.message}`);
+            glob.ui.display_err_in_ele(doc_con, `Failed to load content for '${chap_data_obj.title}'.<br>${err.message}`);
             if (submenu_cntnr_ele) submenu_cntnr_ele.innerHTML = ''; // Clear submenu on error
         }
     }
@@ -493,9 +493,9 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
         let pdf_doc_obj, pdf_ifr;
         if (typeof pdfjsLib === 'undefined') {
             console.error("PDF.js library (pdfjsLib) is not loaded. Cannot display PDF.");
-            glob.ui.display_err_in_ele(doc_con_div, "PDF viewer is not available. PDF.js library is missing.");
-            glob.ui.set_doc_hdr(doc_hdr_div, chap_data_obj.title ? `<h2>${chap_data_obj.title}</h2>` : (doc_data.default_hdr_con || `<h2>${doc_data.title}</h2>`));
-            glob.ui.set_doc_ftr(doc_ftr_div, doc_data.default_ftr_con || "PDF Document");
+            glob.ui.display_err_in_ele(doc_con, "PDF viewer is not available. PDF.js library is missing.");
+            glob.ui.set_doc_hdr(doc_hdr, chap_data_obj.title ? `<h2>${chap_data_obj.title}</h2>` : (doc_data.default_hdr_con || `<h2>${doc_data.title}</h2>`));
+            glob.ui.set_doc_ftr(doc_ftr, doc_data.default_ftr_con || "PDF Document");
             if (submenu_cntnr_ele) submenu_cntnr_ele.innerHTML = ''; // Clear submenu
             return;
         }
@@ -516,7 +516,7 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
                 title: chap_data_obj.title || 'PDF Document',
                 style: 'width: 100%; height: calc(100% - 0px); border: none;' // Ensure iframe takes full available height
             });
-            glob.ui.set_doc_con(doc_con_div, pdf_ifr);
+            glob.ui.set_doc_con(doc_con, pdf_ifr);
 
             await glob.ui.upd_doc_hdr_ftr(pdf_doc_obj, 1, pdf_doc_obj.numPages, doc_data, dom_eles_bndl);
             // Pass the base content_url without fragments for page navigation logic,
@@ -526,7 +526,7 @@ glob.ui.load_doc_con = async function(doc_id, chap_id, dom_eles_bndl, evt_handle
 
         } catch (err) {
             console.error("Error loading PDF chapter content:", err);
-            glob.ui.display_err_in_ele(doc_con_div, `Failed to load PDF '${chap_data_obj.title}'.<br>${err.message}`);
+            glob.ui.display_err_in_ele(doc_con, `Failed to load PDF '${chap_data_obj.title}'.<br>${err.message}`);
             glob.heap.curr_pdf = null;
             if (submenu_cntnr_ele) submenu_cntnr_ele.innerHTML = ''; // Clear submenu on PDF load error
         }
