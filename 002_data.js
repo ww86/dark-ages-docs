@@ -31,7 +31,36 @@ glob.data.docs_data = [
     path        :     "./docs/IC_001_status_of_propositions.pdf"
   },
 
+  { 
+    id          :     "ic002",
+    title       :     "IC 002 Project Status",
+    cat         :     "project_mgmt",
+    path        :     "./docs/IC_002_project_status.pdf"
+  },
+
+  { 
+    id          :     "ic003",
+    title       :     "IC 003 Responsibilities",
+    cat         :     "project_mgmt",
+    path        :     "./docs/IC_003_responsibilities.pdf"
+  },
+
+  { 
+    id          :     "ic004",
+    title       :     "IC 004 Bureaucracy",
+    cat         :     "project_mgmt",
+    path        :     "./docs/IC_004_bureaucracy.pdf"
+  },
+
+
   // General documents
+  { 
+    id          :     "aa000",
+    title       :     "AA 001 Rulebook",
+    cat         :     "general_docs",
+    path        :     "./docs/AA_001_rulebook.pdf"
+  },
+
   { 
     id          :     "am001",
     title       :     "AM 001 Mechanics: Locations",

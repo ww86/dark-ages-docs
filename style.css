@@ -46,6 +46,7 @@ body                                            {   color:          var(--txt-01
 [data-ms~="mainmenu-ui-action"]                 {   color:          var(--txt-05) ;                     }
 [data-ms~="mainmenu-cat-title"]                 {   color:          var(--txt-04) ;                     }
 [data-ms~="rht-col-link"]                       {   color:          var(--txt-04) ;                     }
+[data-ms~="pdf-pge-nav-item-btn"]               {   color:          var(--txt-01) ;                     }
 .site-hdr h1                                    {   color:          var(--txt-02) ;                     }
 .rht-col-links-hdr-spn                          {   color:          var(--txt-04) ;                     }
 .mainmenu-print-dom                             {   color:          var(--txt-05) ;                     }   
@@ -83,7 +84,7 @@ body                                            { background-color: var(--bg-01)
 .mainmenu-docs-hdr-spn                          { background:       transparent ;                      }
 [data-ms~="mainmenu-ui-action"]                 { background:       transparent ;                      }
 .mainmenu-print-dom                             { background-color: var(--bg-02) ;                     }                         
-.rht-col-links-hdr-spn                         { background:       transparent ;                      }
+.rht-col-links-hdr-spn                          { background:       transparent ;                      }
 
 hr                                              { background:       linear-gradient(to right, var(--border-01), var(--special-03), var(--border-01)) ;                     }
 
@@ -237,7 +238,8 @@ body                                {   font-family:    'Crimson Text', serif;  
 [data-ms~="mainmenu-cat-title"]     {   font-family:    'Crimson Text', serif;          }
 [data-ms~="mainmenu-doc-btn"]       {   font-family:    'Crimson Text', serif;          }
 [data-ms~="rht-col-link"]           {   font-family:    'Crimson Text', serif;          }
-.rht-col-links-hdr-spn             {   font-family:    'Manuskript Gothisch', serif;   }
+[data-ms~="pdf-pge-nav-item-btn"]   {   font-family:    'Crimson Text', serif;          }
+.rht-col-links-hdr-spn              {   font-family:    'Manuskript Gothisch', serif;   }
 .rht-col                            {   font-family:    'Crimson Text', serif;          }
 .mainmenu-print-dom                 {   font-family:    'Crimson Text', serif;          }
 
@@ -255,9 +257,10 @@ body                                {   font-family:    'Crimson Text', serif;  
 [data-ms~="mainmenu-doc-btn"]       {   font-size:      12px      ;                     }
 .mainmenu-docs-hdr-spn              {   font-size:      16px      ;                     }
 [data-ms~="mainmenu-ui-action"]     {   font-size:      inherit   ;                     }
+[data-ms~="pdf-pge-nav-item-btn"]   {   font-size:      10px      ;                     }
 .rht-col                            {   font-size:      12px      ;                     }
 [data-ms~="rht-col-link"]           {   font-size:      14px      ;                     }
-.rht-col-links-hdr-spn             {   font-size:      16px      ;                     }
+.rht-col-links-hdr-spn              {   font-size:      16px      ;                     }
 .site-ftr                           {   font-size:      12px      ;                     }
 .site-hdr h1                        {   font-size:      48px      ;                     }
 .submenu                            {   font-size:      10px      ;                     }
@@ -278,7 +281,7 @@ body                                {   font-family:    'Crimson Text', serif;  
 [data-ms~="mainmenu-ui-action"]     {   font-weight:    bold      ;                     }
 .rht-col                            {   font-weight:    normal    ;                     }
 [data-ms~="rht-col-link"]           {   font-weight:    bold      ;                     }
-.rht-col-links-hdr-spn             {   font-weight:    normal    ;                     }
+.rht-col-links-hdr-spn              {   font-weight:    normal    ;                     }
 .site-hdr h1                        {   font-weight:    normal    ;                     }
 .submenu                            {   font-weight:    normal    ;                     }
 .chap-menu-item-btn                 {   font-weight:    bold      ;                     }
